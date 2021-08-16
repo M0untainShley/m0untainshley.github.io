@@ -4,6 +4,27 @@
   
   
   <entry>
+    <title>JSON数据和Java对象的相互转换</title>
+    <link href="/2021/08/16/JSON%E6%95%B0%E6%8D%AE%E5%92%8CJava%E5%AF%B9%E8%B1%A1%E7%9A%84%E7%9B%B8%E4%BA%92%E8%BD%AC%E6%8D%A2/"/>
+    <url>/2021/08/16/JSON%E6%95%B0%E6%8D%AE%E5%92%8CJava%E5%AF%B9%E8%B1%A1%E7%9A%84%E7%9B%B8%E4%BA%92%E8%BD%AC%E6%8D%A2/</url>
+    
+    <content type="html"><![CDATA[<h3 id="Json介绍"><a href="#Json介绍" class="headerlink" title="Json介绍"></a>Json介绍</h3><p>Json有一下几种解释的方法</p><ul><li><p>JSON 指的是 JavaScript 对象表示法（<strong>J</strong>ava<strong>S</strong>cript <strong>O</strong>bject <strong>N</strong>otation）</p></li><li><p>JSON 是轻量级的文本数据交换格式</p></li><li><p>JSON 具有自我描述性，更易理解</p></li><li><p>JSON 独立于语言</p><ul><li>JSON 使用 Javascript语法来描述数据对象，但是 JSON 仍然独立于语言和平台</li><li>JSON 解析器和 JSON 库支持许多不同的编程语言</li><li> 目前非常多的动态（PHP，JSP，.NET）编程语言都支持JSON</li></ul></li></ul><h3 id="Json语法"><a href="#Json语法" class="headerlink" title="Json语法"></a>Json语法</h3><ul><li><p>数据在键值对中（Key/Value）</p><ul><li>Key用引号（单双都行）引起来，也可以不使用引号<ul><li>Value的取值类<pre><code>1. 数字（整数或浮点数）</code></pre><ol start="2"><li>字符串（在双引号中）</li><li>boolean（true 或 false）</li><li>数组（在中括号中）    </li><li>对象（在大括号中）</li><li>null</li></ol></li></ul></li></ul></li><li><p>数据由逗号分隔：多个键值对由逗号分隔</p></li><li><p>中括号保存数组：[]</p><ul><li>```json<br>{<pre><code>&quot;sites&quot;: [    &#123; &quot;name&quot;:&quot;百度&quot; , &quot;url&quot;:&quot;www.baidu.com&quot; &#125;,     &#123; &quot;name&quot;:&quot;google&quot; , &quot;url&quot;:&quot;www.google.com&quot; &#125;,     &#123; &quot;name&quot;:&quot;github&quot; , &quot;url&quot;:&quot;www.github.com&quot; &#125;]</code></pre>}<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs autohotkey"><br>- 大括号保存对象：&#123;&#125;<br><br>  - ```json<br>    &#123; <span class="hljs-string">&quot;firstName&quot;</span>:<span class="hljs-string">&quot;John&quot;</span> , <span class="hljs-string">&quot;lastName&quot;</span>:<span class="hljs-string">&quot;Doe&quot;</span> &#125;<br></code></pre></td></tr></table></figure></li></ul></li></ul><h3 id="JSON数据和Java对象的相互转换"><a href="#JSON数据和Java对象的相互转换" class="headerlink" title="JSON数据和Java对象的相互转换"></a>JSON数据和Java对象的相互转换</h3><h4 id="JSON解析器"><a href="#JSON解析器" class="headerlink" title="JSON解析器"></a>JSON解析器</h4><p>常见的Json解析器有：jsonlib，gson，fastjson，jackson</p><h4 id="jackson"><a href="#jackson" class="headerlink" title="jackson"></a>jackson</h4>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>Java Web</tag>
+      
+      <tag>学习笔记</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Git学习笔记</title>
     <link href="/2021/08/15/Git%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     <url>/2021/08/15/Git%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
@@ -16,7 +37,9 @@
       
       <tag>Git</tag>
       
-      <tag>Java</tag>
+      <tag>Java Web</tag>
+      
+      <tag>学习笔记</tag>
       
     </tags>
     
