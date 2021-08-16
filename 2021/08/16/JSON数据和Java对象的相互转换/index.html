@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      320 字
+      646 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      4
+      9
        分钟
     </span>
   
@@ -276,8 +276,74 @@
 </ul>
 </li>
 </ul>
-<h3 id="JSON数据和Java对象的相互转换"><a href="#JSON数据和Java对象的相互转换" class="headerlink" title="JSON数据和Java对象的相互转换"></a>JSON数据和Java对象的相互转换</h3><h4 id="JSON解析器"><a href="#JSON解析器" class="headerlink" title="JSON解析器"></a>JSON解析器</h4><p>常见的Json解析器有：jsonlib，gson，fastjson，jackson</p>
-<h4 id="jackson"><a href="#jackson" class="headerlink" title="jackson"></a>jackson</h4>
+<h3 id="JSON数据和Java对象的相互转换"><a href="#JSON数据和Java对象的相互转换" class="headerlink" title="JSON数据和Java对象的相互转换"></a>JSON数据和Java对象的相互转换</h3><h4 id="JSON解析器"><a href="#JSON解析器" class="headerlink" title="JSON解析器"></a>JSON解析器</h4><p>常见的Json解析器有：jsonlib，gson，fastjson，jackson，<strong>本文章将使用jackson进行json与java对象互相转换的操作</strong></p>
+<h4 id="jackson"><a href="#jackson" class="headerlink" title="jackson"></a>jackson</h4><ul>
+<li><p>项目结构</p>
+<ul>
+<li>```java<br>❯ tree<br>Folder PATH listing for volume Life<br>Volume serial number is D29E-A58F<br>D:.<br>├───src<br>│   └───com<br>│       └───json<br>│           ├───domain<br>│           └───test<br>└───WEB<pre><code>└───WEB-INF
+    └───lib
+</code></pre>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><br>- domain下的Person类<br><br>  - ```java<br>    package com.json.domain;<br>    <br>    <span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Person</span> &#123;</span><br>        <span class="hljs-keyword">private</span> <span class="hljs-keyword">String</span> name;<br>        <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> age;<br>        <span class="hljs-keyword">private</span> <span class="hljs-keyword">String</span> address;<br>    <br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">String</span> <span class="hljs-title">getName</span><span class="hljs-params">()</span> </span>&#123;<br>            <span class="hljs-keyword">return</span> name;<br>        &#125;<br>    <br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setName</span><span class="hljs-params">(<span class="hljs-keyword">String</span> name)</span> </span>&#123;<br>            <span class="hljs-keyword">this</span>.name = name;<br>        &#125;<br>    <br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">getAge</span><span class="hljs-params">()</span> </span>&#123;<br>            <span class="hljs-keyword">return</span> age;<br>        &#125;<br>    <br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setAge</span><span class="hljs-params">(<span class="hljs-keyword">int</span> age)</span> </span>&#123;<br>            <span class="hljs-keyword">this</span>.age = age;<br>        &#125;<br>    <br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">String</span> <span class="hljs-title">getAddress</span><span class="hljs-params">()</span> </span>&#123;<br>            <span class="hljs-keyword">return</span> address;<br>        &#125;<br>    <br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setAddress</span><span class="hljs-params">(<span class="hljs-keyword">String</span> address)</span> </span>&#123;<br>            <span class="hljs-keyword">this</span>.address = address;<br>        &#125;<br>    <br>        @<span class="hljs-function">Override</span><br><span class="hljs-function">        <span class="hljs-keyword">public</span> <span class="hljs-keyword">String</span> <span class="hljs-title">toString</span><span class="hljs-params">()</span> </span>&#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Person&#123;&quot;</span> +<br>                    <span class="hljs-string">&quot;name=&#x27;&quot;</span> + name + <span class="hljs-string">&#x27;\&#x27;&#x27;</span> +<br>                    <span class="hljs-string">&quot;, age=&quot;</span> + age +<br>                    <span class="hljs-string">&quot;, address=&#x27;&quot;</span> + address + <span class="hljs-string">&#x27;\&#x27;&#x27;</span> +<br>                    <span class="hljs-string">&#x27;&#125;&#x27;</span>;<br>        &#125;<br>    &#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>test下的JsonTest类</p>
+<ul>
+<li><pre><code class="java">package com.json.test;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.json.domain.Person;
+import org.junit.Test;
+
+public class JsonTest &#123;
+    @Test
+    public void test1() throws Exception&#123;
+        // 创建person对象
+        Person person = new Person();
+        person.setName(&quot;json&quot;);
+        person.setAge(22);
+        person.setAddress(&quot;杭州&quot;);
+
+        // 创建jackson解析器对象
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        // 调用方法转换person对象为string字符串
+        String string = objectMapper.writeValueAsString(person);
+
+        System.out.println(string);
+    &#125;
+
+    @Test
+    public void test2() throws Exception&#123;
+        // json数据
+        String json = &quot;&#123;\&quot;name\&quot;:\&quot;json\&quot;,\&quot;age\&quot;:\&quot;23\&quot;,\&quot;address\&quot;:\&quot;运城\&quot;&#125;&quot;;
+
+        // 创建jackson解析器对象
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        // 调用方法将json转换为person对象
+        Person person = objectMapper.readValue(json, Person.class);
+
+        System.out.println(person);
+    &#125;
+&#125;
+</code></pre>
+</li>
+<li><p>运行截图</p>
+<ul>
+<li>test1方法<ul>
+<li><img src="C:\Users\ShleyCpt\AppData\Roaming\Typora\typora-user-images\image-20210816163618572.png" srcset="/img/loading.gif" lazyload alt="image-20210816163618572"></li>
+</ul>
+</li>
+<li>test2方法<ul>
+<li><img src="C:\Users\ShleyCpt\AppData\Roaming\Typora\typora-user-images\image-20210816163645534.png" srcset="/img/loading.gif" lazyload alt="image-20210816163645534"></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
             </div>
             <hr>
             <div>
