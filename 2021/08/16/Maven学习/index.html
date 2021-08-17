@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      0 字
+      1.2k 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      1
+      15
        分钟
     </span>
   
@@ -228,12 +228,117 @@
             <h1 style="display: none">Maven学习</h1>
             
             <div class="markdown-body">
-              
+              <h3 id="Maven是什么"><a href="#Maven是什么" class="headerlink" title="Maven是什么"></a>Maven是什么</h3><p>Maven 是一个项目管理工具，它包含了：</p>
+<ul>
+<li>一个项目对象模型 (POM：Project Object Model)</li>
+<li>一组标准集合</li>
+<li>一个项目生命周期(Project Lifecycle)</li>
+<li>一个依赖管理系统(Dependency Management System)</li>
+<li>用来运行定义在生命周期阶段(phase)中插件(plugin)目标(goal)的逻辑</li>
+</ul>
+<h3 id="Maven下载安装"><a href="#Maven下载安装" class="headerlink" title="Maven下载安装"></a>Maven下载安装</h3><ul>
+<li>下载：<a target="_blank" rel="noopener" href="https://archive.apache.org/dist/maven/maven-3/">https://archive.apache.org/dist/maven/maven-3/</a></li>
+<li>安装</li>
+<li>配置<ul>
+<li>系统变量总添加%MAVEN_HOME%，路径为Maven安装路径（不是bin，是安装目录）</li>
+<li>添加path，值为%MAVEN_HOME%/bin</li>
+<li>打开cmd运行mvn -v，出现以下结果表示安装成功  <img src="/img/Maven学习/1.png" srcset="/img/loading.gif" lazyload></li>
+</ul>
+</li>
+</ul>
+<h3 id="Maven仓库"><a href="#Maven仓库" class="headerlink" title="Maven仓库"></a>Maven仓库</h3><h4 id="仓库的概念"><a href="#仓库的概念" class="headerlink" title="仓库的概念"></a>仓库的概念</h4><p>用来存储下载的插件和 jar 包</p>
+<h4 id="三种仓库"><a href="#三种仓库" class="headerlink" title="三种仓库"></a>三种仓库</h4><ul>
+<li>本地仓库<ul>
+<li>用来存储从远程仓库或中央仓库下载的插件和 jar 包，项目使用一些插件或 jar 包</li>
+<li>优先从本地仓库查找</li>
+<li>默认本地仓库位置在 USER_HOME/.m2/repository</li>
+</ul>
+</li>
+<li>远程仓库<ul>
+<li>如果本地需要插件或者jar包，本地仓库没有，默认去远程仓库下载</li>
+<li>远程仓库可以在互联网内也可以在局域网内</li>
+</ul>
+</li>
+<li>中央仓库<ul>
+<li>在 maven 软件中内置一个远程仓库地址 <a target="_blank" rel="noopener" href="http://repo1.maven.org/maven2">http://repo1.maven.org/maven2</a> ，它是中央仓库，服务于整个互联网，它是由 Maven 团队自己维护，里面存储了非常全的 jar 包，它包含了世界上大部分流行的开源项目构件</li>
+</ul>
+</li>
+</ul>
+<h5 id="本地仓库的配置"><a href="#本地仓库的配置" class="headerlink" title="本地仓库的配置"></a>本地仓库的配置</h5><p>打开MAVE_HOME/conf/settings.xml，添加如下内容</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">localRepository</span>&gt;</span>D:\JetBrains\apache-maven-3.6.0\mvn-repo<span class="hljs-tag">&lt;/<span class="hljs-name">localRepository</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h5 id="远程仓库的配置"><a href="#远程仓库的配置" class="headerlink" title="远程仓库的配置"></a>远程仓库的配置</h5><p>打开MAVE_HOME/conf/settings.xml，添加如下内容</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">mirror</span>&gt;</span>  <br>    <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>alimaven<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>  <br>    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>aliyun maven<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>  <br>    <span class="hljs-tag">&lt;<span class="hljs-name">url</span>&gt;</span>http://maven.aliyun.com/nexus/content/groups/public/<span class="hljs-tag">&lt;/<span class="hljs-name">url</span>&gt;</span>  <br>    <span class="hljs-tag">&lt;<span class="hljs-name">mirrorOf</span>&gt;</span>central<span class="hljs-tag">&lt;/<span class="hljs-name">mirrorOf</span>&gt;</span>          <br><span class="hljs-tag">&lt;/<span class="hljs-name">mirror</span>&gt;</span> <br></code></pre></td></tr></table></figure>
+
+<h4 id="Maven常用的命令"><a href="#Maven常用的命令" class="headerlink" title="Maven常用的命令"></a>Maven常用的命令</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># compile是maven工程的编译命令，作用是将 src/main/java下的文件编译为class文件输出到 target目录下</span><br>mvn compile<br><br><span class="hljs-comment"># test是maven工程的测试命令,作用是执行src/test/java下的单元测试类</span><br>mvn <span class="hljs-built_in">test</span><br><br><span class="hljs-comment"># clean是maven工程的清理命令，执行clean会删除target目录及内容</span><br>mvn clean<br><br><span class="hljs-comment"># package是maven工程的打包命令，对于java工程执行package打成jar包，对于web工程打成war包</span><br>maven package<br><br><span class="hljs-comment"># install是maven工程的安装命令，执行nstall将maven打成jar包或war包发布到本地仓库</span><br>maven install<br></code></pre></td></tr></table></figure>
+
+<p><strong>Maven命令的特点：当后面的命令执行时，前面的操作过程也都会自动执行</strong></p>
+<h4 id="Maven坐标"><a href="#Maven坐标" class="headerlink" title="Maven坐标"></a>Maven坐标</h4><p>百度搜索，选择热度最高的，添加到pom.xml，刷新即可</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!-- https://mvnrepository.com/artifact/junit/junit --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>junit<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>junit<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>4.12<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- &lt;scope&gt;test&lt;/scope&gt; --&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h5 id="依赖范围（scope）"><a href="#依赖范围（scope）" class="headerlink" title="依赖范围（scope）"></a>依赖范围（scope）</h5><img src="/img/Maven学习/5.png" srcset="/img/loading.gif" lazyload>
+
+<ul>
+<li>compile<ul>
+<li>编译范围，指 A 在编译时依赖 B，此范围为默认依赖范围</li>
+<li>编译范围的依赖会用在编译、测试、运行，由于运行时需要所以编译范围的依赖会被打包</li>
+</ul>
+</li>
+<li>provided<ul>
+<li>provided 依赖只有在当 JDK 或者一个容器已提供该依赖之后才使用， provided 依赖在编译和测试时需要，在运行时不需要</li>
+<li>比如：servlet api 被 tomcat 容器提供</li>
+</ul>
+</li>
+<li>runtime<ul>
+<li>runtime 依赖在运行和测试系统的时候需要，但在编译的时候不需要</li>
+<li>比如：jdbc的驱动包，由于运行时需要所以 runtime 范围的依赖会被打包</li>
+</ul>
+</li>
+<li>test<ul>
+<li>test 范围依赖 在编译和运行时都不需要，它们只有在测试编译和测试运行阶段可用</li>
+<li>比如：junit，由于运行时不需要所以 test 范围依赖不会被打包</li>
+</ul>
+</li>
+<li>system：system 范围依赖与 provided 类似，但是你必须显式的提供一个对于本地系统中 JAR文件的路径，需要指定 systemPath 磁盘路径，system 依赖不推荐使用</li>
+</ul>
+<h3 id="错误解决"><a href="#错误解决" class="headerlink" title="错误解决"></a>错误解决</h3><p>在创建Maven项目中遇到如下两个错误</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">java</span>错误：不支持的发行版本<span class="hljs-number">5</span><br><br><span class="hljs-attribute">Error</span>：java：不再支持源选项 <span class="hljs-number">5</span>，请使用 <span class="hljs-number">6</span> 或更高版本<br></code></pre></td></tr></table></figure>
+
+<p>查了网上一些资料，解决办法如下</p>
+<h4 id="第一步：Settings"><a href="#第一步：Settings" class="headerlink" title="第一步：Settings"></a>第一步：Settings</h4><p>打开File-Settigs</p>
+<img src="/img/Maven学习/2_1.png" srcset="/img/loading.gif" lazyload>
+
+<p>按照如下步骤设置，<strong>设置自己的JDK版本，我的是11</strong></p>
+<img src="/img/Maven学习/2_2.png" srcset="/img/loading.gif" lazyload>
+
+<h4 id="第二步：Project-Structure"><a href="#第二步：Project-Structure" class="headerlink" title="第二步：Project Structure"></a>第二步：Project Structure</h4><p>打开File-Project Structure</p>
+<img src="/img/Maven学习/3.png" srcset="/img/loading.gif" lazyload>
+
+<p>跟Settings设置一样，<strong>选择自己的JDK版本，我的是11</strong></p>
+<img src="/img/Maven学习/3_2.png" srcset="/img/loading.gif" lazyload>
+
+<img src="/img/Maven学习/3_3.png" srcset="/img/loading.gif" lazyload>
+
+<h4 id="第三步：添加插件"><a href="#第三步：添加插件" class="headerlink" title="第三步：添加插件"></a>第三步：添加插件</h4><p>打开pom.xml，添加如下内容</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">build</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">plugins</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">plugin</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>maven-compiler-plugin<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>3.1<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">target</span>&gt;</span>11<span class="hljs-tag">&lt;/<span class="hljs-name">target</span>&gt;</span> <br>                <span class="hljs-tag">&lt;<span class="hljs-name">source</span>&gt;</span>11<span class="hljs-tag">&lt;/<span class="hljs-name">source</span>&gt;</span><br>            <span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">plugin</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">plugins</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">build</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>可以使用快捷键Alt+Insert，添加插件，随后选择内容即可（内容可以自动弹出）</p>
+<img src="/img/Maven学习/4.png" srcset="/img/loading.gif" lazyload>
+
             </div>
             <hr>
             <div>
               <div class="post-metas mb-3">
                 
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Java-Web/">Java Web</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>
+                    
+                  </div>
                 
               </div>
               
