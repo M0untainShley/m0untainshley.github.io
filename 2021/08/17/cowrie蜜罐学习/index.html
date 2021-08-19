@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2.6k 字
+      2.7k 字
     </span>
   
 
@@ -294,6 +294,13 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 登录数据库</span><br>cowrie@aliyun:~/cowrie$ mysql -u cowrie -p<br>Enter password:<br>Welcome to the MySQL monitor.  Commands end with ; or \g.<br>Your MySQL connection id is 81<br>Server version: 5.7.35-0ubuntu0.18.04.1 (Ubuntu)<br><br>Copyright (c) 2000, 2021, Oracle and/or its affiliates.<br><br>Oracle is a registered trademark of Oracle Corporation and/or its<br>affiliates. Other names may be trademarks of their respective<br>owners.<br><br>Type <span class="hljs-string">&#x27;help;&#x27;</span> or <span class="hljs-string">&#x27;\h&#x27;</span> <span class="hljs-keyword">for</span> <span class="hljs-built_in">help</span>. Type <span class="hljs-string">&#x27;\c&#x27;</span> to clear the current input statement.<br><br>mysql&gt; use cowrie;<br>Reading table information <span class="hljs-keyword">for</span> completion of table and column names<br>You can turn off this feature to get a quicker startup with -A<br><br>Database changed<br>mysql&gt; select * from auth;<br>+----+--------------+---------+----------+----------+---------------------+<br>| id | session      | success | username | password | timestamp           |<br>+----+--------------+---------+----------+----------+---------------------+<br>|  3 | 9068effacdae |       1 | root     | 123      | 2021-08-18 13:22:33 |<br>+----+--------------+---------+----------+----------+---------------------+<br>1 row <span class="hljs-keyword">in</span> <span class="hljs-built_in">set</span> (0.00 sec)<br></code></pre></td></tr></table></figure>
 
 <p>ok，数据已经存在了</p>
+<h3 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h3><p>第二天就捕获到不少ssh登录的信息，可以收集一下做个字典，嘿嘿</p>
+<img src="/img/20210819蜜罐学习/1.png" srcset="/img/loading.gif" lazyload>
+
+<p>还有登录后执行的操作</p>
+<img src="/img/20210819蜜罐学习/2.png" srcset="/img/loading.gif" lazyload>
+
+<p>可以学习学习思路什么的~</p>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
 <li><p><a target="_blank" rel="noopener" href="http://www.lmxspace.com/2018/05/11/%E8%9C%9C%E7%BD%90%E5%AD%A6%E4%B9%A0/">http://www.lmxspace.com/2018/05/11/%E8%9C%9C%E7%BD%90%E5%AD%A6%E4%B9%A0/</a></p>
 </li>
@@ -334,6 +341,12 @@
                 <div class="post-prevnext">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2021/08/18/Windows-kerbroes%E5%8D%8F%E8%AE%AE-ntlm%E5%8D%8F%E8%AE%AE%E5%AD%A6%E4%B9%A0/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Windows kerbroes协议 && ntlm协议学习</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
