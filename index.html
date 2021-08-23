@@ -182,18 +182,25 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2021/08/18/Windows-kerbroes%E5%8D%8F%E8%AE%AE-ntlm%E5%8D%8F%E8%AE%AE%E5%AD%A6%E4%B9%A0/" target="_self">
-          Windows kerbroes协议 &amp;&amp; ntlm协议学习
+        <a href="/2021/08/18/%E3%80%8A%E5%BD%BB%E5%BA%95%E7%90%86%E8%A7%A3Winodows%E8%AE%A4%E8%AF%81%E3%80%8B%E8%AE%AE%E9%A2%98%E5%AD%A6%E4%B9%A0/" target="_self">
+          《彻底理解Winodows认证》议题学习
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2021/08/18/Windows-kerbroes%E5%8D%8F%E8%AE%AE-ntlm%E5%8D%8F%E8%AE%AE%E5%AD%A6%E4%B9%A0/" target="_self">
+        <a href="/2021/08/18/%E3%80%8A%E5%BD%BB%E5%BA%95%E7%90%86%E8%A7%A3Winodows%E8%AE%A4%E8%AF%81%E3%80%8B%E8%AE%AE%E9%A2%98%E5%AD%A6%E4%B9%A0/" target="_self">
           
           
             
           
-          
+          Windows本地认证Windows登录认证过程Windows本身是不存储用户的明文密码的，Windows将用户密码Hash后存储在硬盘之中，在用户登录时对用户的密码进行Hash后跟存放的密码进行比较，相同即可登录成功
+Windows Hash后的密码存放的位置
+1%SystemRoot%\system32\config\sam
+
+
+
+用户登录时的进程调用
+1winlogon.exe -&gt; 
         </a>
       </p>
 
@@ -207,6 +214,15 @@
           </div>
         
         
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Winodows/">Winodows</a>
+            
+              <a href="/tags/%E5%86%85%E7%BD%91%E7%9F%A5%E8%AF%86/">内网知识</a>
+            
+          </div>
         
       </div>
     </article>

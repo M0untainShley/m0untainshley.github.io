@@ -4,13 +4,21 @@
   
   
   <entry>
-    <title>Windows kerbroes协议 &amp;&amp; ntlm协议学习</title>
-    <link href="/2021/08/18/Windows-kerbroes%E5%8D%8F%E8%AE%AE-ntlm%E5%8D%8F%E8%AE%AE%E5%AD%A6%E4%B9%A0/"/>
-    <url>/2021/08/18/Windows-kerbroes%E5%8D%8F%E8%AE%AE-ntlm%E5%8D%8F%E8%AE%AE%E5%AD%A6%E4%B9%A0/</url>
+    <title>《彻底理解Winodows认证》议题学习</title>
+    <link href="/2021/08/18/%E3%80%8A%E5%BD%BB%E5%BA%95%E7%90%86%E8%A7%A3Winodows%E8%AE%A4%E8%AF%81%E3%80%8B%E8%AE%AE%E9%A2%98%E5%AD%A6%E4%B9%A0/"/>
+    <url>/2021/08/18/%E3%80%8A%E5%BD%BB%E5%BA%95%E7%90%86%E8%A7%A3Winodows%E8%AE%A4%E8%AF%81%E3%80%8B%E8%AE%AE%E9%A2%98%E5%AD%A6%E4%B9%A0/</url>
     
-    <content type="html"><![CDATA[]]></content>
+    <content type="html"><![CDATA[<h3 id="Windows本地认证"><a href="#Windows本地认证" class="headerlink" title="Windows本地认证"></a>Windows本地认证</h3><h4 id="Windows登录认证过程"><a href="#Windows登录认证过程" class="headerlink" title="Windows登录认证过程"></a>Windows登录认证过程</h4><p>Windows本身是不存储用户的明文密码的，Windows将用户密码Hash后存储在硬盘之中，在用户登录时对用户的密码进行Hash后跟存放的密码进行比较，相同即可登录成功</p><p>Windows Hash后的密码存放的位置</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">%SystemRoot%\system32\config\sam<br></code></pre></td></tr></table></figure><p>用户登录时的进程调用</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">winlogon.exe -&gt; 接收用户输入 -&gt; lsass.exe -&gt; (认证) -&gt; 跟Winodows<br></code></pre></td></tr></table></figure><ul><li>winlogon.exe(Windows Logon Process)，是Windows的用户登陆程序，用于管理用户登录和退出</li><li>lsass.exe用于微软Windows系统的安全机制，它用于本地安全和登陆策略</li></ul><h4 id="NTLM-Hash的产生过程"><a href="#NTLM-Hash的产生过程" class="headerlink" title="NTLM Hash的产生过程"></a>NTLM Hash的产生过程</h4><p>在Windows的登录认证过程中，对密码进行的Hash操作被称为NTLM Hash，接下来我们分析一下产生NTLM Hash过程是什么样子的</p><ol><li>用户输入明文密码password；</li><li>对password进行16进制编码，得到password_hex；</li><li>对password_hex进行Unicode编码，得到password_hex_unicode；</li><li>对password_hex_unicode进行md4，得到最终的NTLM Hash；</li></ol><p>可以通过python来实现上面的操作，代码如下</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 如果没有安装库的话需要使用pip install passlib进行安装</span><br>❯ python<br>Python 3.9.6 (tags/v3.9.6:db3ff76, Jun 28 2021, 15:26:21) [MSC v.1929 64 bit (AMD64)] on win32<br>Type <span class="hljs-string">&quot;help&quot;</span>, <span class="hljs-string">&quot;copyright&quot;</span>, <span class="hljs-string">&quot;credits&quot;</span> or <span class="hljs-string">&quot;license&quot;</span> <span class="hljs-keyword">for</span> more information.<br>&gt;&gt;&gt; from passlib.hash import nthash<br>&gt;&gt;&gt; p = nthash.hash(<span class="hljs-string">&#x27;Admin123&#x27;</span>)<br>&gt;&gt;&gt; p<br><span class="hljs-string">&#x27;e45a314c664d40a227f9540121d1a29d&#x27;</span><br></code></pre></td></tr></table></figure><h4 id="LM-Hash"><a href="#LM-Hash" class="headerlink" title="LM Hash"></a>LM Hash</h4><p>LM协议全称是LM（LAN Manager）协议，在NTML协议出来之后已经被取代了，只有老版本的Windows系统还在用</p><img src="/img/《彻底理解Winodows认证》议题学习/1.png"><p>LM与NTLM协议的认证机制相同，但是加密算法不同（使用DES算法加密，容易被解密）</p><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul><li>议题原博客：<a href="https://payloads.online/archivers/2018-11-30/1">https://payloads.online/archivers/2018-11-30/1</a></li><li><a href="https://mp.weixin.qq.com/s/iNOlLbbsXKOEFed0QaX4vg">https://mp.weixin.qq.com/s/iNOlLbbsXKOEFed0QaX4vg</a></li></ul>]]></content>
     
     
+    
+    <tags>
+      
+      <tag>Winodows</tag>
+      
+      <tag>内网知识</tag>
+      
+    </tags>
     
   </entry>
   
