@@ -4,6 +4,27 @@
   
   
   <entry>
+    <title>Android逆向学习—环境配置以及工具下载安装</title>
+    <link href="/2021/08/25/Android%E9%80%86%E5%90%91%E5%AD%A6%E4%B9%A0%E2%80%94%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E4%BB%A5%E5%8F%8A%E5%B7%A5%E5%85%B7%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85/"/>
+    <url>/2021/08/25/Android%E9%80%86%E5%90%91%E5%AD%A6%E4%B9%A0%E2%80%94%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E4%BB%A5%E5%8F%8A%E5%B7%A5%E5%85%B7%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85/</url>
+    
+    <content type="html"><![CDATA[<h4 id="开启USB调试（自己买的Android测试机）"><a href="#开启USB调试（自己买的Android测试机）" class="headerlink" title="开启USB调试（自己买的Android测试机）"></a>开启USB调试（自己买的Android测试机）</h4><p>买一台真机，测试机，设置  -&gt; 开发者选项 -&gt; 启用 USB 调试</p><h4 id="ADB（Android-Debug-Bridge，Android-调试桥-）工具安装"><a href="#ADB（Android-Debug-Bridge，Android-调试桥-）工具安装" class="headerlink" title="ADB（Android Debug Bridge，Android 调试桥 ）工具安装"></a>ADB（Android Debug Bridge，Android 调试桥 ）工具安装</h4><p>关于ADB（Android Debug Bridge，Android 调试桥 ）介绍：<a href="https://developer.android.com/studio/command-line/adb">https://developer.android.com/studio/command-line/adb</a></p><p>下载：<a href="https://developer.android.com/studio/releases/platform-tools#downloads">https://developer.android.com/studio/releases/platform-tools#downloads</a> ，点击下载”  下载适用于 Windows 的 SDK Platform-Tools”，解压之后会有adb.exe</p><img src="/img/Android逆向学习—环境配置以及工具下载安装/1.jpg"><h4 id="MT管理器"><a href="#MT管理器" class="headerlink" title="MT管理器"></a>MT管理器</h4><p>MT 管理器是一款文件管理工具和 APK 逆向修改神器。软件有汉化应用、替换资源、修改布局、修改逻辑代码、资源混淆、去除签名校验等功能</p><p>百度自行安装即可</p><h4 id="模拟器"><a href="#模拟器" class="headerlink" title="模拟器"></a>模拟器</h4><p>雷电模拟器：<a href="https://www.ldmnq.com/">https://www.ldmnq.com/</a></p><h4 id="JDK"><a href="#JDK" class="headerlink" title="JDK"></a>JDK</h4><p>华为镜像源下载：<a href="https://mirrors.huaweicloud.com/java/jdk/">https://mirrors.huaweicloud.com/java/jdk/</a></p><p>配置环境变量，输入”java -version”显示结果即可</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">❯ java -version<br>java version <span class="hljs-string">&quot;1.8.0_201&quot;</span><br>Java(TM) SE Runtime Environment (build 1.8.0_201-b09)<br>Java HotSpot(TM) 64-Bit Server VM (build 25.201-b09, mixed mode)<br></code></pre></td></tr></table></figure><h4 id="SDK"><a href="#SDK" class="headerlink" title="SDK"></a>SDK</h4><p>下载地址：<a href="https://www.androiddevtools.cn/">https://www.androiddevtools.cn/</a></p><p>配置环境变量，输入”ddms”检查是否安装成功</p><img src="/img/Android逆向学习—环境配置以及工具下载安装/2.jpg"><h4 id="NDK"><a href="#NDK" class="headerlink" title="NDK"></a>NDK</h4><p>官方介绍</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">Android NDK 是一组使您能将 C 或 C++（“原生代码”）嵌入到 Android 应用中的工具，能够在 Android 应用中使用原生代码对于想执行以下一项或多项操作的开发者特别有用：<br><br>- 在平台之间移植其应用<br>- 重复使用现有库，或者提供其自己的库供重复使用<br>- 在特定情况下提高性能，特别是像游戏这种计算密集型应用<br></code></pre></td></tr></table></figure><p>下载地址：<a href="https://developer.android.com/ndk/downloads?hl=zh-cn">https://developer.android.com/ndk/downloads?hl=zh-cn</a></p><p>配置环境变量，输入”ndk-build”检查是否安装成功</p><img src="/img/Android逆向学习—环境配置以及工具下载安装/3.jpg">]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>Android</tag>
+      
+      <tag>逆向</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>cowrie蜜罐学习</title>
     <link href="/2021/08/17/cowrie%E8%9C%9C%E7%BD%90%E5%AD%A6%E4%B9%A0/"/>
     <url>/2021/08/17/cowrie%E8%9C%9C%E7%BD%90%E5%AD%A6%E4%B9%A0/</url>
