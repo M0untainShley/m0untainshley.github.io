@@ -235,29 +235,27 @@ Microsoft Visual Studio10.0：Microsoft Visual Studio（简称VS）是美国微�
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2021/08/25/frida%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" target="_self">
-          Frida绕过安卓ROOT环境检测
+        <a href="/2021/08/25/frida+frida-demo%20hook%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/" target="_self">
+          frida+frida-demo hook技术学习
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2021/08/25/frida%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" target="_self">
+        <a href="/2021/08/25/frida+frida-demo%20hook%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/" target="_self">
           
           
             
           
-          准备工作
-一台root权限的安卓测试机
+          前言安卓手机客户端测试的时候遇到root检测无法绕过，想找找相关的资料学学，网上看到了frida和frida-demo的练习环境，就自己尝试着做了一下，frida-demo这个apk有以下三关：
 
-安装frida，frida-tools
+pin码暴力破解
+root环境检测绕过
+加密函数破解
 
-
-123456❯ pip install frida frida-tools...# 安装成功❯ frida --version15.0.13
-
-
-下载adb并且添加环境变量
-
-在https://www.androiddevtools.cn/下载platform-tool即可，解压后里面有adb.exe，添加环境变
+准备工作
+一台root权限的安卓测试机，我的谷歌的 nexus 5
+测试机安装frida-demo.apk，安装过程在此不做描述…
+安装frida
         </a>
       </p>
 
@@ -275,9 +273,11 @@ Microsoft Visual Studio10.0：Microsoft Visual Studio（简称VS）是美国微�
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/Android/">Android</a>
+              <a href="/tags/Android%E9%80%86%E5%90%91/">Android逆向</a>
             
-              <a href="/tags/Hook/">Hook</a>
+              <a href="/tags/frida/">frida</a>
+            
+              <a href="/tags/Hook%E6%8A%80%E6%9C%AF/">Hook技术</a>
             
           </div>
         
