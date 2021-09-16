@@ -4,6 +4,27 @@
   
   
   <entry>
+    <title>CTF Show  WEB入门 命令执行Write Up</title>
+    <link href="/2021/09/16/CTF-Show-WEB%E5%85%A5%E9%97%A8-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8CWrite-Up/"/>
+    <url>/2021/09/16/CTF-Show-WEB%E5%85%A5%E9%97%A8-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8CWrite-Up/</url>
+    
+    <content type="html"><![CDATA[<h3 id="web-29"><a href="#web-29" class="headerlink" title="web 29"></a>web 29</h3><p>源码</p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs php">error_reporting(<span class="hljs-number">0</span>);  <span class="hljs-comment">// 关闭错误报告</span><br><span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;c&#x27;</span>]))&#123;<br>    <span class="hljs-variable">$c</span> = <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;c&#x27;</span>];<br>    <span class="hljs-keyword">if</span>(!preg_match(<span class="hljs-string">&quot;/flag/i&quot;</span>, <span class="hljs-variable">$c</span>))&#123;  <br>    <span class="hljs-comment">// 正则匹配</span><br>    <span class="hljs-comment">//    /i表示大小写不敏感</span><br>    <span class="hljs-comment">//    preg_match()正则匹配函数，匹配成功返回1，否则返回0</span><br>        <span class="hljs-keyword">eval</span>(<span class="hljs-variable">$c</span>);<br>    &#125;<br>    <br>&#125;<span class="hljs-keyword">else</span>&#123;<br>    highlight_file(<span class="hljs-keyword">__FILE__</span>);<br></code></pre></td></tr></table></figure><p>分析源码后可知，</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>CTF</tag>
+      
+      <tag>Write up</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Android逆向常用的工具汇总</title>
     <link href="/2021/08/29/Android%E9%80%86%E5%90%91%E5%B8%B8%E7%94%A8%E7%9A%84%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/"/>
     <url>/2021/08/29/Android%E9%80%86%E5%90%91%E5%B8%B8%E7%94%A8%E7%9A%84%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/</url>
@@ -144,11 +165,11 @@
     
     <tags>
       
+      <tag>Git</tag>
+      
       <tag>Java Web</tag>
       
       <tag>学习笔记</tag>
-      
-      <tag>Git</tag>
       
     </tags>
     
