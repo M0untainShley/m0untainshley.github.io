@@ -18,9 +18,25 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-  <title>Archives - M0untainShley</title>
+  <title>Windows提权方式总结（未完成） - M0untainShley</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
 
 
 
@@ -48,7 +64,7 @@
 
 
 <body>
-  <header style="height: 60vh;">
+  <header style="height: 70vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -147,9 +163,46 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="Archive">
+            <span class="h2" id="subtitle" title="Windows提权方式总结（未完成）">
               
             </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-10-12 16:15" pubdate>
+        October 12, 2021 pm
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      266 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      3
+       分钟
+    </span>
+  
+
+  
+  
+</div>
 
             
           </div>
@@ -162,46 +215,105 @@
 
   <main>
     
-      <div class="container nopadding-x-md">
-        <div class="py-5" id="board"
-          >
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Windows提权方式总结（未完成）</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：October 12, 2021 pm
+                
+              </p>
+            
+            <div class="markdown-body">
+              <h3 id="系统内核溢出漏洞提权"><a href="#系统内核溢出漏洞提权" class="headerlink" title="系统内核溢出漏洞提权"></a>系统内核溢出漏洞提权</h3><p>目标系统本身存在一些未打相应补丁的内核溢出漏洞，可利用该漏洞来进行提权</p>
+<h4 id="收集系统的补丁信息"><a href="#收集系统的补丁信息" class="headerlink" title="收集系统的补丁信息"></a>收集系统的补丁信息</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 手动收集</span><br>$ systeminfo<br><br>$ Wmic qfe get Caption,Description,HotFixID,InstalledOn<br><br><span class="hljs-comment">#######################################################</span><br><br><span class="hljs-comment"># 工具、自动化收集信息</span><br><br><span class="hljs-comment"># MSF后渗透扫描模块</span><br>$ post/windows/gather/enum_patches<br>$ post/multi/recon/local_exploit_suggester<br><br><span class="hljs-comment"># github上的项目</span><br><span class="hljs-comment"># 原理基本上都是从漏洞库查询目标系统的存在的MS/CVE编号，再查询本机上有没有打补丁</span><br>https://github.com/chroblert/WindowsVulnScan<br>https://github.com/AonCyberLabs/Windows-Exploit-Suggester  <span class="hljs-comment"># 项目于2017年停止更新</span><br>https://github.com/vulmon/Vulmap  <span class="hljs-comment"># 对于Windows系统不太友好</span><br>https://github.com/bitsadmin/wesng  <br></code></pre></td></tr></table></figure>
+
+<h4 id="EXP"><a href="#EXP" class="headerlink" title="EXP"></a>EXP</h4><p>在进行目标系统的信息收集之后，可以<strong>利用工具MSF（Metasploit Framework）或者CS（Cobalt Strike）进行提权</strong>，此外，有些EXP未集成在这两款工具之上，那么可以在github项目中寻找EXP</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cmd"><span class="hljs-function">https://<span class="hljs-title">github.com</span>/<span class="hljs-title">SecWiki</span>/<span class="hljs-title">windows</span>-<span class="hljs-title">kernel</span>-<span class="hljs-title">exploits</span> </span><br><span class="hljs-function"><span class="hljs-title">https</span>://<span class="hljs-title">github.com</span>/<span class="hljs-title">Ascotbe</span>/<span class="hljs-title">Kernelhub</span></span><br><span class="hljs-function"><span class="hljs-title">https</span>://<span class="hljs-title">github.com</span>/<span class="hljs-title">offensive</span>-<span class="hljs-title">security</span>/<span class="hljs-title">exploitdb</span>  </span><br><span class="hljs-function"><span class="hljs-title">https</span>://<span class="hljs-title">github.com</span>/<span class="hljs-title">nomi</span>-<span class="hljs-title">sec</span>/<span class="hljs-title">PoC</span>-<span class="hljs-title">in</span>-<span class="hljs-title">GitHub</span>  # 收集了很多<span class="hljs-title">exp</span>信息</span><br></code></pre></td></tr></table></figure>
+
+<h3 id=""><a href="#" class="headerlink" title=""></a></h3><p>待更新…</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Windows/">Windows</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/">内网渗透</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/10/02/%E5%B8%B8%E8%A7%81%E7%9A%84Webshell%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7%E7%9A%84%E6%B5%81%E9%87%8F%E7%89%B9%E5%BE%81%E5%88%86%E6%9E%90/">
+                        <span class="hidden-mobile">常见的Webshell管理工具的流量特征分析</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
                 
 
-<div class="list-group">
-  <p class="h4">11 posts in total.</p>
-  <hr>
-  
-  
-    
-      
-      <p class="h5">2021</p>
-    
-    <a href="/2021/10/12/Windows%E6%8F%90%E6%9D%83%E6%96%B9%E5%BC%8F%E6%80%BB%E7%BB%93/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Windows提权方式总结（未完成）</span>
-      <time style="float: right;">10-12</time>
-    </a>
-  
-    
-    <a href="/2021/10/02/%E5%B8%B8%E8%A7%81%E7%9A%84Webshell%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7%E7%9A%84%E6%B5%81%E9%87%8F%E7%89%B9%E5%BE%81%E5%88%86%E6%9E%90/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">常见的Webshell管理工具的流量特征分析</span>
-      <time style="float: right;">10-02</time>
-    </a>
-  
-</div>
-
-
-
-
-
-              </div>
-            </div>
-          </div>
+              </article>
+            
+          </article>
         </div>
       </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
     
 
     
@@ -281,9 +393,15 @@
 
 
 
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
 
 
 
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
 
 
 
