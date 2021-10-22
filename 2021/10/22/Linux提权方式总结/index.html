@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      300 字
+      335 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      3
+      4
        分钟
     </span>
   
@@ -251,7 +251,8 @@
 
 
 
-<p>下载exp到本地</p>
+<p>这里使用脏牛漏洞进行提权（CVE-2016-5195），可以看到筛选出来的目标中存在”Dirty COW”字样</p>
+<p>首先，下载exp到本地</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ searchsploit -m linux/<span class="hljs-built_in">local</span>/40839.c  <br>...  <span class="hljs-comment"># 省略中间文字</span><br><br>$ ls<br>40839.c<br></code></pre></td></tr></table></figure>
 
 
@@ -281,9 +282,9 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/Linux/">Linux</a>
-                    
                       <a class="hover-with-bg" href="/tags/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/">权限提升</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Linux/">Linux</a>
                     
                       <a class="hover-with-bg" href="/tags/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/">内网渗透</a>
                     
