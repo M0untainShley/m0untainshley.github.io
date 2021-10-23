@@ -256,20 +256,20 @@
 <p>访问 <a target="_blank" rel="noopener" href="http://192.168.199.245/">http://192.168.199.245/</a> </p>
 <img src="/img/Vulnhub-DC-1过关笔记/1.png" srcset="/img/loading.gif" lazyload>
 
-<br/>
+<br>
 
-<p>系统使用Drupal CMS，网上搜了一下，该CMS是存在历史漏洞的，需要确定一下版本，于是右键-查看源码，发现了版本，使用的是<br/></p>
+<p>系统使用Drupal CMS，网上搜了一下，该CMS是存在历史漏洞的，需要确定一下版本，于是右键-查看源码，发现了版本，使用的是<br></p>
 <img src="/img/Vulnhub-DC-1过关笔记/2.png" srcset="/img/loading.gif" lazyload>
 
-<br/>
+<br>
 
-<p>于是在网站上找Drupal  7存在的漏洞以及EXP，在github上找了一下，项目地址<a target="_blank" rel="noopener" href="https://github.com/pimps/CVE-2018-7600">https://github.com/pimps/CVE-2018-7600</a></p>
-<br/>
+<p>在网上搜索了一下Drupal  7存在的漏洞以及EXP，在github上找了一下，项目地址<a target="_blank" rel="noopener" href="https://github.com/pimps/CVE-2018-7600">https://github.com/pimps/CVE-2018-7600</a></p>
+<br>
 
 <p>使用<a target="_blank" rel="noopener" href="https://github.com/pimps/CVE-2018-7600/blob/master/drupa7-CVE-2018-7600.py">https://github.com/pimps/CVE-2018-7600/blob/master/drupa7-CVE-2018-7600.py</a> 脚本，发现是可以执行命令的</p>
 <img src="/img/Vulnhub-DC-1过关笔记/3.png" srcset="/img/loading.gif" lazyload>
 
-<br/>
+<br>
 
 <p><strong>于是，就想使用bash或者nc反弹一个shell回来，但是都失败了，写webshell也失败了，使用echo进行写shell的时候，$_POST会被自动替换成空，有师傅看到这篇文章时知道是什么问题的话希望解答一下，提前谢谢啦~</strong></p>
 <p>写shell写不进去，那么就换一个思路，看看msf能不能弹一个shell回来，msf启动！</p>
@@ -278,12 +278,12 @@
 <h4 id="Flag1"><a href="#Flag1" class="headerlink" title="Flag1"></a>Flag1</h4><p>flag1就在网站的根目录下</p>
 <img src="/img/Vulnhub-DC-1过关笔记/4.png" srcset="/img/loading.gif" lazyload>
 
-<br/>
+<br>
 
 <p>可以看到网站下还有一个robots.txt，那么再来看看robots.txt中有什么</p>
 <img src="/img/Vulnhub-DC-1过关笔记/5.png" srcset="/img/loading.gif" lazyload>
 
-<br/>
+<br>
 
 <p>有没有很意外！</p>
 <h4 id="Flag2"><a href="#Flag2" class="headerlink" title="Flag2"></a>Flag2</h4><p>根据flag1的提示，我们可以猜想flag2存在于网站的配置文件中</p>
@@ -315,7 +315,7 @@
 <p>可以看到管理员的密码，但是还是没有flag3的信息</p>
 <img src="/img/Vulnhub-DC-1过关笔记/6.png" srcset="/img/loading.gif" lazyload>
 
-<br/>
+<br>
 
 <p>看看其他的表</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">mysql&gt; select * from node;<br></code></pre></td></tr></table></figure>
@@ -325,7 +325,7 @@
 <p>在node表中发现了flag3的信息，但是没有flag3的值</p>
 <img src="/img/Vulnhub-DC-1过关笔记/7.png" srcset="/img/loading.gif" lazyload>
 
-<br/>
+<br>
 
 <p><strong>接下来只演示拿到flag3的值，网上找了很多资料也不太清楚这样做的原因是什么，有师傅知道的话，可以跟我交流下</strong></p>
 <p>存放在users表中的密码字段是使用SHA-512进行加密的，SHA-512是哈希，因此解密难度太大，我们可以在数据库中修改管理员的密码哈希来修改管理员密码</p>
@@ -336,11 +336,11 @@
 <p>修改后使用admin/password登录即可，依次点击dashboard-flag3即可拿到flag3的值</p>
 <img src="/img/Vulnhub-DC-1过关笔记/8.png" srcset="/img/loading.gif" lazyload>
 
-<br/>
+<br>
 
 <img src="/img/Vulnhub-DC-1过关笔记/9.png" srcset="/img/loading.gif" lazyload>
 
-<br/>
+<br>
 
 <img src="/img/Vulnhub-DC-1过关笔记/10.png" srcset="/img/loading.gif" lazyload>
 
