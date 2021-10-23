@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      31
+      32
        分钟
     </span>
   
@@ -242,32 +242,32 @@
 <p>根据您的技能水平，您可能可以跳过查找这些标志中的大部分并直接查找 root。</p>
 <p>初学者可能会遇到他们以前从未遇到过的挑战，但只需通过 Google 搜索即可获得完成此挑战所需的信息</p>
 <h3 id="靶场获取"><a href="#靶场获取" class="headerlink" title="靶场获取"></a>靶场获取</h3><p><a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/dc-1,292/">https://www.vulnhub.com/entry/dc-1,292/</a></p>
-<h3 id="获取Flag"><a href="#获取Flag" class="headerlink" title="获取Flag"></a>获取Flag</h3><h4 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h4><p>靶场使用的是桥接模式，第一步，探测网段内存活主机</p>
+<h3 id="获取Flag"><a href="#获取Flag" class="headerlink" title="获取Flag"></a>获取Flag</h3><h4 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h4><p>靶场使用的是桥接模式，第一步，探测网段内存活主机，看下我们的靶机的IP是多少</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ nmap -sP 192.168.199.0/24<br>...<br>Nmap scan report <span class="hljs-keyword">for</span> DC-1.lan (192.168.199.245)<br>Host is up (0.022s latency).<br>MAC Address: 00:0C:29:FC:6F:79 (VMware)<br></code></pre></td></tr></table></figure>
 
 
 
-<p>接下来，扫描该主机开放的端口</p>
+<p>发现192.168.199.245的banner信息——DC-1，了接下来，扫描该主机开放的端口</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ nmap -O -sV -sT -T4 -p- 192.168.199.245<br>Nmap scan report <span class="hljs-keyword">for</span> DC-1.lan (192.168.199.245)<br>Host is up (0.00071s latency).<br>Not shown: 65528 filtered ports<br>PORT      STATE SERVICE    VERSION<br>22/tcp    open  ssh        OpenSSH 6.0p1 Debian 4+deb7u7 (protocol 2.0)<br>25/tcp    open  tcpwrapped<br>80/tcp    open  http       Apache httpd 2.2.22 ((Debian))<br>110/tcp   open  tcpwrapped<br>111/tcp   open  rpcbind    2-4 (RPC <span class="hljs-comment">#100000)</span><br>2333/tcp  open  tcpwrapped<br>55631/tcp open  status     1 (RPC <span class="hljs-comment">#100024)</span><br>MAC Address: 00:0C:29:FC:6F:79 (VMware)<br>Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port<br>Device <span class="hljs-built_in">type</span>: general purpose<br>Running: Linux 3.X<br>OS CPE: cpe:/o:linux:linux_kernel:3<br>OS details: Linux 3.2 - 3.16<br>Network Distance: 1 hop<br>Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel<br><br>OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .<br>Nmap <span class="hljs-keyword">done</span>: 1 IP address (1 host up) scanned <span class="hljs-keyword">in</span> 2674.80 seconds<br><br></code></pre></td></tr></table></figure>
 
 
 
 <p>可以看到开放了22和80端口还有其他端口，其他端口服务都是些无关紧要的服务，跟拿flag应该是没关系的，于是着重分析下22号端口和80端口，22端口用于ssh，可以使用hydra进行暴力破解，无果（也是，作者肯定不会直接让root的ssh使用弱口令的），下面分析80端口</p>
-<p>访问<a target="_blank" rel="noopener" href="http://192.168.199.245/">http://192.168.199.245/</a> </p>
+<p>访问 <a target="_blank" rel="noopener" href="http://192.168.199.245/">http://192.168.199.245/</a> </p>
 <img src="/img/Vulnhub-DC-1过关笔记/1.png" srcset="/img/loading.gif" lazyload>
 
-
+</br>
 
 <p>系统使用Drupal CMS，网上搜了一下，该CMS是存在历史漏洞的，需要确定一下版本，于是右键-查看源码，发现了版本，使用的是Drupal  7</p>
 <img src="/img/Vulnhub-DC-1过关笔记/2.png" srcset="/img/loading.gif" lazyload>
 
-
+</br>
 
 <p>于是在网站上找Drupal  7存在的漏洞以及EXP，在github上找了一下，项目地址<a target="_blank" rel="noopener" href="https://github.com/pimps/CVE-2018-7600">https://github.com/pimps/CVE-2018-7600</a></p>
-<p>使用<a target="_blank" rel="noopener" href="https://github.com/pimps/CVE-2018-7600/blob/master/drupa7-CVE-2018-7600.py%E8%84%9A%E6%9C%AC%EF%BC%8C%E5%8F%91%E7%8E%B0%E6%98%AF%E5%8F%AF%E4%BB%A5%E6%89%A7%E8%A1%8C%E5%91%BD%E4%BB%A4%E7%9A%84">https://github.com/pimps/CVE-2018-7600/blob/master/drupa7-CVE-2018-7600.py脚本，发现是可以执行命令的</a></p>
+<p>使用<a target="_blank" rel="noopener" href="https://github.com/pimps/CVE-2018-7600/blob/master/drupa7-CVE-2018-7600.py">https://github.com/pimps/CVE-2018-7600/blob/master/drupa7-CVE-2018-7600.py</a> 脚本，发现是可以执行命令的</p>
 <img src="/img/Vulnhub-DC-1过关笔记/3.png" srcset="/img/loading.gif" lazyload>
 
-
+</br>
 
 <p><strong>于是，就想使用bash或者nc反弹一个shell回来，但是都失败了，写webshell也失败了，使用echo进行写shell的时候，$_POST会被自动替换成空，有师傅看到这篇文章时知道是什么问题的话希望解答一下，提前谢谢啦~</strong></p>
 <p>写shell写不进去，那么就换一个思路，看看msf能不能弹一个shell回来，msf启动！</p>
@@ -276,12 +276,12 @@
 <h4 id="Flag1"><a href="#Flag1" class="headerlink" title="Flag1"></a>Flag1</h4><p>flag1就在网站的根目录下</p>
 <img src="/img/Vulnhub-DC-1过关笔记/4.png" srcset="/img/loading.gif" lazyload>
 
-
+</br>
 
 <p>可以看到网站下还有一个robots.txt，那么再来看看robots.txt中有什么</p>
 <img src="/img/Vulnhub-DC-1过关笔记/5.png" srcset="/img/loading.gif" lazyload>
 
-
+</br>
 
 <p>有没有很意外！</p>
 <h4 id="Flag2"><a href="#Flag2" class="headerlink" title="Flag2"></a>Flag2</h4><p>根据flag1的提示，我们可以猜想flag2存在于网站的配置文件中</p>
@@ -313,7 +313,7 @@
 <p>可以看到管理员的密码，但是还是没有flag3的信息</p>
 <img src="/img/Vulnhub-DC-1过关笔记/6.png" srcset="/img/loading.gif" lazyload>
 
-
+</br>
 
 <p>看看其他的表</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">mysql&gt; select * from node;<br></code></pre></td></tr></table></figure>
@@ -323,7 +323,7 @@
 <p>在node表中发现了flag3的信息，但是没有flag3的值</p>
 <img src="/img/Vulnhub-DC-1过关笔记/7.png" srcset="/img/loading.gif" lazyload>
 
-
+</br>
 
 <p><strong>接下来只演示拿到flag3的值，网上找了很多资料也不太清楚这样做的原因是什么，有师傅知道的话，可以跟我交流下</strong></p>
 <p>存放在users表中的密码字段是使用SHA-512进行加密的，SHA-512是哈希，因此解密难度太大，我们可以在数据库中修改管理员的密码哈希来修改管理员密码</p>
@@ -334,7 +334,11 @@
 <p>修改后使用admin/password登录即可，依次点击dashboard-flag3即可拿到flag3的值</p>
 <img src="/img/Vulnhub-DC-1过关笔记/8.png" srcset="/img/loading.gif" lazyload>
 
+</br>
+
 <img src="/img/Vulnhub-DC-1过关笔记/9.png" srcset="/img/loading.gif" lazyload>
+
+</br>
 
 <img src="/img/Vulnhub-DC-1过关笔记/10.png" srcset="/img/loading.gif" lazyload>
 
