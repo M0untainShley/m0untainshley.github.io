@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2.2k 字
+      2.1k 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      31
+      32
        分钟
     </span>
   
@@ -229,18 +229,18 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：October 23, 2021 pm
+                  本文最后更新于：October 27, 2021 pm
                 
               </p>
             
             <div class="markdown-body">
-              <h3 id="靶场简介"><a href="#靶场简介" class="headerlink" title="靶场简介"></a>靶场简介</h3><p>DC-1 是一个特意建造的易受攻击的实验室，目的是在渗透测试领域获得经验。</p>
-<p>它旨在为初学者带来挑战，但它的难易程度取决于您的技能和知识以及您的学习能力。</p>
-<p>要成功完成此挑战，您需要具备 Linux 技能、熟悉 Linux 命令行并具有使用基本渗透测试工具（例如 Kali Linux 或 Parrot Security OS 上的工具）的经验。</p>
-<p>有多种获得 root 的方法，但是，我已经包含了一些包含初学者线索的标志。</p>
-<p>总共有五个标志，但最终目标是在 root 的主目录中找到并读取标志。您甚至不需要是 root 用户即可执行此操作，但是，您将需要 root 权限。</p>
-<p>根据您的技能水平，您可能可以跳过查找这些标志中的大部分并直接查找 root。</p>
-<p>初学者可能会遇到他们以前从未遇到过的挑战，但只需通过 Google 搜索即可获得完成此挑战所需的信息</p>
+              <h3 id="靶场简介"><a href="#靶场简介" class="headerlink" title="靶场简介"></a>靶场简介</h3><p>DC-1 is a purposely built vulnerable lab for the purpose of gaining experience in the world of penetration testing.</p>
+<p>It was designed to be a challenge for beginners, but just how easy it is will depend on your skills and knowledge, and your ability to learn.</p>
+<p>To successfully complete this challenge, you will require Linux skills, familiarity with the Linux command line and experience with basic penetration testing tools, such as the tools that can be found on Kali Linux, or Parrot Security OS.</p>
+<p>There are multiple ways of gaining root, however, I have included some flags which contain clues for beginners.</p>
+<p>There are five flags in total, but the ultimate goal is to find and read the flag in root’s home directory. You don’t even need to be root to do this, however, you will require root privileges.</p>
+<p>Depending on your skill level, you may be able to skip finding most of these flags and go straight for root.</p>
+<p>Beginners may encounter challenges that they have never come across previously, but a Google search should be all that is required to obtain the information required to complete this challenge.</p>
 <h3 id="靶场获取"><a href="#靶场获取" class="headerlink" title="靶场获取"></a>靶场获取</h3><p><a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/dc-1,292/">https://www.vulnhub.com/entry/dc-1,292/</a></p>
 <h3 id="获取Flag"><a href="#获取Flag" class="headerlink" title="获取Flag"></a>获取Flag</h3><h4 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h4><p>靶场使用的是桥接模式，第一步，探测网段内存活主机，看下我们的靶机的IP是多少</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ nmap -sP 192.168.199.0/24<br>...<br>Nmap scan report <span class="hljs-keyword">for</span> DC-1.lan (192.168.199.245)<br>Host is up (0.022s latency).<br>MAC Address: 00:0C:29:FC:6F:79 (VMware)<br></code></pre></td></tr></table></figure>
@@ -386,6 +386,12 @@
                 <div class="post-prevnext">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2021/10/24/Vulnhun-DC-2%E9%80%9A%E5%85%B3%E7%AC%94%E8%AE%B0/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Vulnhub-DC-2通关笔记</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
