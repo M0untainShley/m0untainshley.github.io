@@ -310,8 +310,6 @@
 <p>当执行cd时，提示”-rbash:  cd:  restricted”，表示当前bash是rbash（restricted bash），需要进行绕过才可以执行所有的命令，接下来进行rbash绕过</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># vi进入编辑器界面</span><br>$ vi<br><br><span class="hljs-comment"># 命令模式下执行（多按几次ESC）</span><br>:<span class="hljs-built_in">set</span> shell=/bin/bash<br>:shell<br></code></pre></td></tr></table></figure>
 
-<img src="/img/Vulnhub-DC-2过关笔记/5.png" srcset="/img/loading.gif" lazyload>
-
 
 
 <p>加载环境变量</p>
@@ -322,11 +320,15 @@
 <p>拿到flag3</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ ls<br>flag3.txt  usr<br><br>$ cat flag3.txt<br>Poor old Tom is always running after Jerry. Perhaps he should su <span class="hljs-keyword">for</span> all the stress he causes.<br></code></pre></td></tr></table></figure>
 
+<img src="/img/Vulnhub-DC-2过关笔记/2.gif" srcset="/img/loading.gif" lazyload>
+
+
+
 <h4 id="Flag4"><a href="#Flag4" class="headerlink" title="Flag4"></a>Flag4</h4><p>分析flag3的提示，出现了su关键字，尝试切换一下用户</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 年迈的tom总是在Jerry后面，也许他应该&quot;su&quot;对于所有的压力</span><br>Poor old Tom is always running after Jerry. Perhaps he should su <span class="hljs-keyword">for</span> all the stress he causes.<br></code></pre></td></tr></table></figure>
 
 <p>在jerry的家目录下出现了flag4</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs bash"> <span class="hljs-comment"># 切换用户</span><br>$ su jerry<br>Password:<br><br>$ <span class="hljs-built_in">pwd</span><br>/home/tom<br><br><span class="hljs-comment"># 进入jerry家目录</span><br>$ <span class="hljs-built_in">cd</span> ~<br><br><span class="hljs-comment"># 显示内容</span><br>$ ls<br>flag4.txt<br><br>$ cat flag4.txt<br>Good to see that you<span class="hljs-string">&#x27;ve made it this far - but you&#x27;</span>re not home yet.<br><br>You still need to get the final flag (the only flag that really counts!!!).<br><br>No hints here - you<span class="hljs-string">&#x27;re on your own now.  :-)</span><br><span class="hljs-string"></span><br><span class="hljs-string">Go on - git outta here!!!!</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 切换用户</span><br>$ su jerry<br>Password:<br><br>$ <span class="hljs-built_in">pwd</span><br>/home/tom<br><br><span class="hljs-comment"># 进入jerry家目录</span><br>$ <span class="hljs-built_in">cd</span> ~<br><br><span class="hljs-comment"># 显示内容</span><br>$ ls<br>flag4.txt<br><br>$ cat flag4.txt<br>Good to see that you<span class="hljs-string">&#x27;ve made it this far - but you&#x27;</span>re not home yet.<br><br>You still need to get the final flag (the only flag that really counts!!!).<br><br>No hints here - you<span class="hljs-string">&#x27;re on your own now.  :-)</span><br><span class="hljs-string"></span><br><span class="hljs-string">Go on - git outta here!!!!</span><br></code></pre></td></tr></table></figure>
 
 
 
@@ -364,12 +366,6 @@
                 <div class="post-prevnext">
                   <article class="post-prev col-6">
                     
-                    
-                      <a href="/2021/10/24/Vulnhub-DC-2%E8%BF%87%E5%85%B3%E7%AC%94%E8%AE%B0/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Vulnhub-DC-2通关笔记</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
                     
                   </article>
                   <article class="post-next col-6">
